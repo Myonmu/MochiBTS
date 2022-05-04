@@ -15,8 +15,10 @@ namespace MochiBTS.Core.Primitives
         public Node rootNode;
         public Node.State treeState = Node.State.Running;
         public List<Node> nodes = new();
-        public ITransform graphTransform = null;
         public Blackboard blackboard;
+        //View Transform
+        [HideInInspector]public Vector3 transformScale;
+        [HideInInspector]public Vector3 transformPosition;
         public Node.State UpdateTree(Agent agent, bool forceExecute = false)
         {
             if (forceExecute||rootNode.state == Node.State.Running)

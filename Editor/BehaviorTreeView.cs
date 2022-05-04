@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using MochiBTS.Core.Primitives;
+using MochiBTS.Core.Primitives.DataContainers;
 using MochiBTS.Core.Primitives.Nodes;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
@@ -12,7 +13,7 @@ namespace MochiBTS.Editor
 {
     public class BehaviorTreeView : GraphView
     {
-        public Action<NodeView> OnNodeSelected;
+        public Action<NodeView> onNodeSelected;
         private NodeSearchWindow searchWindow;
         public BehaviorTree tree;
         private BehaviorTreeSettings settings;
@@ -32,7 +33,8 @@ namespace MochiBTS.Editor
             Undo.undoRedoPerformed += OnUndoRedo;
             viewTransformChanged += _ => {
                 if (tree is null) return;
-                tree.graphTransform = viewTransform; //Lost if recompiled...
+                tree.transformPosition = viewTransform.position;
+                tree.transformScale = viewTransform.scale; //Lost if recompiled...
             };
         }
         public void AddSearchWindow(BehaviorTreeEditor editor)
@@ -69,9 +71,9 @@ namespace MochiBTS.Editor
                     AddElement(edge);
                 });
             });
-            if (tree.graphTransform is not null)
-                UpdateViewTransform(tree.graphTransform.position, tree.graphTransform.scale);
-            else tree.graphTransform = viewTransform;
+            if(tree.transformScale == Vector3.zero) tree.transformScale = Vector3.one;
+            UpdateViewTransform(tree.transformPosition,tree.transformScale);
+            
         }
 
         private NodeView FindNodeView(Node node)
@@ -110,7 +112,7 @@ namespace MochiBTS.Editor
         private void CreateNodeView(Node node)
         {
             var nodeView = new NodeView(node) {
-                onNodeSelected = OnNodeSelected
+                onNodeSelected = onNodeSelected
             };
             AddElement(nodeView);
         }

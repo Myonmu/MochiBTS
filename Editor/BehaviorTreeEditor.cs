@@ -63,7 +63,7 @@ namespace MochiBTS.Editor
             //     EditorGUILayout.PropertyField(blackboardProperty,includeChildren:true);
             //     treeObject?.ApplyModifiedProperties();
             // };
-            treeView.OnNodeSelected = OnNodeSelectionChanged;
+            treeView.onNodeSelected = OnNodeSelectionChanged;
             root.Q<Button>("blackboardButton").clicked += () => blackboardView?.UpdateBlackBoard(treeView.tree);
             root.Q<Button>("variableButton").clicked +=
                 () => blackboardView?.UpdateVariableBoard(variableBoard);
@@ -107,6 +107,8 @@ namespace MochiBTS.Editor
             //     treeObject = new SerializedObject(tree);
             //     blackboardProperty = treeObject.FindProperty("blackboard");
             }
+
+            
 
         }
 
