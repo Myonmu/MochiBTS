@@ -1,5 +1,5 @@
 ﻿using System;
-namespace MyonBTS.Core.Primitives.Variables
+namespace MochiBTS.Core.Primitives.Variables.Builtin
 {
     [Serializable]
     public class BoolVariable: VariableBox<bool>

@@ -1,5 +1,4 @@
-﻿using MyonBTS.Core.Primitives.DataContainers;
-namespace MyonBTS.Core.Primitives.Utilities
+﻿namespace MochiBTS.Core.Primitives.Utilities
 {
     public abstract class DataProcessor<T> : BaseDataProcessor
     {

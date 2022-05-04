@@ -1,6 +1,6 @@
-﻿using MyonBTS.Core.Primitives.DataContainers;
-using MyonBTS.Core.Primitives.Nodes;
-namespace MyonBTS.Core.NodeLibrary.CompositeNodes
+﻿using MochiBTS.Core.Primitives.DataContainers;
+using MochiBTS.Core.Primitives.Nodes;
+namespace MochiBTS.Core.NodeLibrary.CompositeNodes.General
 {
     public class SequencerNode : CompositeNode
     {

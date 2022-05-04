@@ -1,6 +1,6 @@
 ﻿using System;
 using UnityEngine;
-namespace MyonBTS.Core.Primitives.Variables
+namespace MochiBTS.Core.Primitives.Variables
 {
     public abstract class BaseVariable
     {

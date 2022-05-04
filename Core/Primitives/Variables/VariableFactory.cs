@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using MyonBTS.Core.Primitives.Variables.Builtin;
-using UnityEngine.Serialization;
-namespace MyonBTS.Core.Primitives.Variables
+using MochiBTS.Core.Primitives.Variables.Builtin;
+namespace MochiBTS.Core.Primitives.Variables
 {
     [Serializable]
     public class VariableFactory

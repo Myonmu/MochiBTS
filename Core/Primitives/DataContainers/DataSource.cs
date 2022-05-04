@@ -1,6 +1,6 @@
 using System;
-using MyonBTS.Core.Primitives.Utilities;
-namespace MyonBTS.Core.Primitives.DataContainers
+using MochiBTS.Core.Primitives.Utilities;
+namespace MochiBTS.Core.Primitives.DataContainers
 {
     [Serializable]
     public struct DataSource<T>

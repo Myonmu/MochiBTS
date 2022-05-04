@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-namespace MyonBTS.Core.Primitives.Utilities.Event
+namespace MochiBTS.Core.Primitives.Utilities.Event
 {
     [CreateAssetMenu(fileName = "BTSEvent", menuName = "BTS/BTS Event")]
     public class BtsEvent : ScriptableObject, IInvokable

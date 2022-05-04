@@ -1,5 +1,5 @@
 ﻿using System;
-namespace MyonBTS.Core.Primitives.Variables
+namespace MochiBTS.Core.Primitives.Variables
 {
     public class VariableBox<T>: BaseVariable
     {

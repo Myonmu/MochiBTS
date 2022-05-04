@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-namespace MyonBTS.Core.Primitives.Nodes
+namespace MochiBTS.Core.Primitives.Nodes
 {
     public abstract class CompositeNode : Node
     {

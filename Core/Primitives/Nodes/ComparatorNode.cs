@@ -1,6 +1,6 @@
-using MyonBTS.Core.Primitives.DataContainers;
-using MyonBTS.Core.Primitives.Utilities;
-namespace MyonBTS.Core.Primitives.Nodes
+using MochiBTS.Core.Primitives.DataContainers;
+using MochiBTS.Core.Primitives.Utilities;
+namespace MochiBTS.Core.Primitives.Nodes
 {
     public abstract class ComparatorNode<T>: ActionNode
     {

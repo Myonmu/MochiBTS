@@ -1,4 +1,4 @@
-namespace MyonBTS.Core.Primitives.Utilities
+namespace MochiBTS.Core.Primitives.Utilities
 {
     public enum SourceType
     {

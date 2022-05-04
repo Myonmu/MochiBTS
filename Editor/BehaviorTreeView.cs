@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using MyonBTS.Core.Primitives;
-using MyonBTS.Core.Primitives.Nodes;
+using MochiBTS.Core.Primitives;
+using MochiBTS.Core.Primitives.Nodes;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Node = MyonBTS.Core.Primitives.Nodes.Node;
+using Node = MochiBTS.Core.Primitives.Nodes.Node;
 namespace MyonBTS.Editor
 {
     public class BehaviorTreeView : GraphView

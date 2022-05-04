@@ -1,7 +1,7 @@
-﻿using MyonBTS.Core.Primitives.DataContainers;
-using MyonBTS.Core.Primitives.Nodes;
+﻿using MochiBTS.Core.Primitives.DataContainers;
+using MochiBTS.Core.Primitives.Nodes;
 using UnityEngine;
-namespace MyonBTS.Core.NodeLibrary.ActionNodes.Transform
+namespace MochiBTS.Core.NodeLibrary.ActionNodes.Transform
 {
     public class LookAtTransformNode: ActionNode
     {

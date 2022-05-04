@@ -1,7 +1,7 @@
-﻿using MyonBTS.Core.Primitives;
-using MyonBTS.Core.Primitives.DataContainers;
+﻿using MochiBTS.Core.Primitives;
+using MochiBTS.Core.Primitives.DataContainers;
 using UnityEngine;
-namespace MyonBTS.Core
+namespace MochiBTS.Core
 {
     public class TreeRunner : MonoBehaviour
     {

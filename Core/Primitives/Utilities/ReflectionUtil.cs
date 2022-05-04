@@ -1,6 +1,6 @@
-using MyonBTS.Core.Primitives.DataContainers;
-using Blackboard = MyonBTS.Core.Primitives.DataContainers.Blackboard;
-namespace MyonBTS.Core.Primitives.Utilities
+using MochiBTS.Core.Primitives.DataContainers;
+using Blackboard = MochiBTS.Core.Primitives.DataContainers.Blackboard;
+namespace MochiBTS.Core.Primitives.Utilities
 {
     public static class ReflectionUtil
     {

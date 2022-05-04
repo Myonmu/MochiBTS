@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-namespace MyonBTS.Core.Primitives.Nodes
+namespace MochiBTS.Core.Primitives.Nodes
 {
     public abstract class DecoratorNode : Node
     {

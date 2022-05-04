@@ -1,7 +1,7 @@
 using System;
-using MyonBTS.Core.Primitives.Nodes;
+using MochiBTS.Core.Primitives.Nodes;
 using UnityEngine;
-namespace MyonBTS.Core.NodeLibrary.ActionNodes.Logic
+namespace MochiBTS.Core.NodeLibrary.ActionNodes.Logic
 {
     public class CompareMagnitudeNode: ComparatorNode<Vector3>
     {

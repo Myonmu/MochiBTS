@@ -1,6 +1,6 @@
 ﻿
 using UnityEngine;
-namespace MyonBTS.Core.Primitives.Utilities
+namespace MochiBTS.Core.Primitives.Utilities
 {
     public class MovementTarget : MonoBehaviour
     {

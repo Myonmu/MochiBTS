@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using MyonBTS.Core.Primitives.DataContainers;
-using MyonBTS.Core.Primitives.Nodes;
+using MochiBTS.Core.Primitives.DataContainers;
+using MochiBTS.Core.Primitives.Nodes;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
-namespace MyonBTS.Core.Primitives
+namespace MochiBTS.Core.Primitives
 {
     [CreateAssetMenu(fileName = "BehaviorTree", menuName = "BTS/BehaviorTree")]
     public class BehaviorTree : ScriptableObject

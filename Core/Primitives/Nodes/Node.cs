@@ -1,6 +1,6 @@
-using MyonBTS.Core.Primitives.DataContainers;
+using MochiBTS.Core.Primitives.DataContainers;
 using UnityEngine;
-namespace MyonBTS.Core.Primitives.Nodes
+namespace MochiBTS.Core.Primitives.Nodes
 {
     public abstract class Node : ScriptableObject
     {

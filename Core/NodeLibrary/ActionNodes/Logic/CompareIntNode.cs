@@ -1,6 +1,5 @@
-using MyonBTS.Core.Primitives.DataContainers;
-using MyonBTS.Core.Primitives.Nodes;
-namespace MyonBTS.Core.NodeLibrary.ActionNodes.Logic
+using MochiBTS.Core.Primitives.Nodes;
+namespace MochiBTS.Core.NodeLibrary.ActionNodes.Logic
 {
     public class CompareIntNode:ComparatorNode<int>
     {

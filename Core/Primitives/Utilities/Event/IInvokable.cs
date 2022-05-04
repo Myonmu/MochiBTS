@@ -1,4 +1,4 @@
-﻿namespace MyonBTS.Core.Primitives.Utilities.Event
+﻿namespace MochiBTS.Core.Primitives.Utilities.Event
 {
     public interface IInvokable
     {

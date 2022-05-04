@@ -1,7 +1,7 @@
-﻿using MyonBTS.Core.Primitives.DataContainers;
-using MyonBTS.Core.Primitives.Nodes;
+﻿using MochiBTS.Core.Primitives.DataContainers;
+using MochiBTS.Core.Primitives.Nodes;
 using UnityEngine;
-namespace MyonBTS.Core.NodeLibrary.CompositeNodes
+namespace MochiBTS.Core.NodeLibrary.CompositeNodes.General
 {
     public class RandomNode : CompositeNode
     {

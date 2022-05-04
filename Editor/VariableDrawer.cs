@@ -1,4 +1,4 @@
-﻿using MyonBTS.Core.Primitives.Variables;
+﻿using MochiBTS.Core.Primitives.Variables;
 using UnityEditor;
 using UnityEngine;
 namespace MyonBTS.Editor
