@@ -1,6 +1,8 @@
 using System;
 using MyonBTS.Core;
 using MyonBTS.Core.Primitives;
+using MyonBTS.Core.Primitives.DataContainers;
+using MyonBTS.Core.Primitives.Variables;
 using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEngine;
@@ -20,6 +22,9 @@ namespace MyonBTS.Editor
 
         //private SerializedObject treeObject;
         private BehaviorTreeView treeView;
+        private VariableBoard variableBoard;
+        private Agent agent;
+        private TreeRunner runner;
 
         private void OnEnable()
         {
@@ -59,6 +64,13 @@ namespace MyonBTS.Editor
             //     treeObject?.ApplyModifiedProperties();
             // };
             treeView.OnNodeSelected = OnNodeSelectionChanged;
+            root.Q<Button>("blackboardButton").clicked += () => blackboardView?.UpdateBlackBoard(treeView.tree);
+            root.Q<Button>("variableButton").clicked +=
+                () => blackboardView?.UpdateVariableBoard(variableBoard);
+            root.Q<Button>("agentButton").clicked +=
+                () => blackboardView?.UpdateAgent(agent);
+            root.Q<Button>("runnerButton").clicked +=
+                () => blackboardView?.UpdateRunner(runner);
             OnSelectionChange();
         }
 
@@ -73,9 +85,14 @@ namespace MyonBTS.Editor
             var tree = Selection.activeObject as BehaviorTree;
             if (!tree)
                 if (Selection.activeObject is GameObject gameObject) {
-                    var runner = gameObject.GetComponent<TreeRunner>();
-                    if (runner)
+                    runner = gameObject.GetComponent<TreeRunner>();
+                    if (runner) {
                         tree = runner.tree;
+                    }
+                    agent = gameObject.GetComponent<Agent>();
+                    if (agent) {
+                        variableBoard = agent.variableBoard;
+                    }
                 }
             if (Application.isPlaying) {
                 if (tree)

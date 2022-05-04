@@ -2,7 +2,7 @@ using MyonBTS.Core.Primitives.DataContainers;
 using Blackboard = MyonBTS.Core.Primitives.DataContainers.Blackboard;
 namespace MyonBTS.Core.Primitives.Utilities
 {
-    public class ReflectionUtil
+    public static class ReflectionUtil
     {
         public static T GetFieldValue<T>(object o, string fieldName)
         {

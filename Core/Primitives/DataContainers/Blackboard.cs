@@ -5,6 +5,7 @@ namespace MyonBTS.Core.Primitives.DataContainers
     [Serializable]
     public class Blackboard : ScriptableObject
     {
+        
 
     }
 }

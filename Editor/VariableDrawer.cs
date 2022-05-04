@@ -9,19 +9,17 @@ namespace MyonBTS.Editor
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             if (property is null) return;
-            float[] widthes = { position.width * 0.2f, position.width * 0.5f, position.width * 0.3f };
             var varFactory = (VariableFactory)property.boxedValue;
-            var i = 0;
-            position.width = widthes[0];
+            var originalWidth = position.width;
+            position.width = 0.2f * originalWidth;
             EditorGUI.PropertyField(position,property.FindPropertyRelative("type"), GUIContent.none);
-            var typeOfVar = varFactory.GetVariableType(varFactory.type);
+            var typeOfVar = varFactory.GetVariableType();
             var specificVar = property.FindPropertyRelative(typeOfVar.Name).Copy();
-            var parentPath = specificVar.propertyPath;
-            while (specificVar.NextVisible(true) && specificVar.propertyPath.StartsWith(parentPath) && i<2) {
-                position.x += position.width;
-                position.width = widthes[i++];
-                EditorGUI.PropertyField(position, specificVar,  GUIContent.none);
-            }
+            position.x += position.width + originalWidth * 0.02f;
+            EditorGUI.PropertyField(position, specificVar.FindPropertyRelative("key"),  GUIContent.none);
+            position.x += position.width + originalWidth * 0.02f;
+            position.width = 0.5f * originalWidth;
+            EditorGUI.PropertyField(position, specificVar.FindPropertyRelative("value"),  GUIContent.none);
         }
        
     }

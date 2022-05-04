@@ -3,13 +3,13 @@ namespace MyonBTS.Core.Primitives.Utilities
 {
     public abstract class DataProcessor<T> : BaseDataProcessor
     {
-        public override void Process(Agent agent)
+        public override void Process(object o)
         {
-            if (agent is T t) {
+            if (o is T t) {
                 OnProcess(t);
             }
         }
 
-        protected abstract void OnProcess(T agent);
+        protected abstract void OnProcess(T o);
     }
 }

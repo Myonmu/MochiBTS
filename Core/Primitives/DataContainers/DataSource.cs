@@ -14,6 +14,7 @@ namespace MyonBTS.Core.Primitives.DataContainers
             value = sourceType switch {
                 SourceType.BlackBoard => ReflectionUtil.GetValueFromBlackboard<T>(blackboard, sourceName),
                 SourceType.Agent => ReflectionUtil.GetValueFromAgent<T>(agent, sourceName),
+                SourceType.VariableBoard => agent.variableBoard.GetValue<T>(sourceName),
                 _ => value
             };
         }

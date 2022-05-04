@@ -1,4 +1,7 @@
-﻿using MyonBTS.Core.Primitives;
+﻿using MyonBTS.Core;
+using MyonBTS.Core.Primitives;
+using MyonBTS.Core.Primitives.DataContainers;
+using MyonBTS.Core.Primitives.Variables;
 using UnityEngine;
 using UnityEngine.UIElements;
 namespace MyonBTS.Editor
@@ -22,7 +25,7 @@ namespace MyonBTS.Editor
         {
             Clear();
             Object.DestroyImmediate(editor);
-            if (tree.blackboard is null) return;
+            if (tree is null || tree.blackboard is null) return;
             editor = UnityEditor.Editor.CreateEditor(tree.blackboard);
             var container = new IMGUIContainer(() => {
                 if (editor.target)
@@ -33,5 +36,43 @@ namespace MyonBTS.Editor
         public new class UxmlFactory : UxmlFactory<InspectorView, UxmlTraits>
         {
         }
+        public void UpdateVariableBoard(VariableBoard variableBoard)
+        {
+            Clear();
+            Object.DestroyImmediate(editor);
+            if (variableBoard is null) return;
+            editor = UnityEditor.Editor.CreateEditor(variableBoard);
+            var container = new IMGUIContainer(() => {
+                if (editor.target)
+                    editor.OnInspectorGUI();
+            });
+            Add(container);
+        }
+        public void UpdateAgent(Agent agent)
+        {
+            Clear();
+            Object.DestroyImmediate(editor);
+            if (agent is null) return;
+            editor = UnityEditor.Editor.CreateEditor(agent);
+            var container = new IMGUIContainer(() => {
+                if (editor.target)
+                    editor.OnInspectorGUI();
+            });
+            Add(container);
+        }
+
+        public void UpdateRunner(TreeRunner runner)
+        {
+            Clear();
+            Object.DestroyImmediate(editor);
+            if (runner is null) return;
+            editor = UnityEditor.Editor.CreateEditor(runner);
+            var container = new IMGUIContainer(() => {
+                if (editor.target)
+                    editor.OnInspectorGUI();
+            });
+            Add(container);
+        }
+        
     }
 }

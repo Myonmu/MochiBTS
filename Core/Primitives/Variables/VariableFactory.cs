@@ -1,46 +1,51 @@
 ﻿using System;
+using System.Collections.Generic;
+using MyonBTS.Core.Primitives.Variables.Builtin;
 using UnityEngine.Serialization;
 namespace MyonBTS.Core.Primitives.Variables
 {
     [Serializable]
     public class VariableFactory
     {
+        public VariableType type;
+        // ======1====== Add an entry in the enum
         public enum VariableType
         {
-            Bool,Integer,Float,Vector3
+            Bool,Integer,Float,Vector3,Transform
         }
-        public VariableType type;
 
+        // ======2====== Add a public field of the corresponding type
+        // !!!!! Field name and field type must be the same!
         public BoolVariable BoolVariable = new();
         public IntegerVariable IntegerVariable = new();
         public FloatVariable FloatVariable = new();
         public Vector3Variable Vector3Variable = new();
+        public TransformVariable TransformVariable = new();
 
-        public BaseVariable CreateVariable()
-        {
-            return GetVariableFromType(type);
-        }
+       
+        // ======3====== Add a new case to return the field.
         private BaseVariable GetVariableFromType(VariableType variableType)
         {
             switch (variableType) {
-
-                case VariableType.Bool:
-                    return BoolVariable;
-                case VariableType.Integer:
-                    return IntegerVariable;
-                case VariableType.Float:
-                    return FloatVariable;
-                case VariableType.Vector3:
-                    return Vector3Variable;
+                case VariableType.Bool: return BoolVariable;
+                case VariableType.Integer: return IntegerVariable;
+                case VariableType.Float: return FloatVariable;
+                case VariableType.Vector3: return Vector3Variable;
+                case VariableType.Transform: return TransformVariable;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(variableType), variableType, null);
             }
         }
 
+        public BaseVariable CreateVariable()
+        {
+            return GetVariableFromType(type);
+        }
 
-        public Type GetVariableType(VariableType varFactoryType)
+        public Type GetVariableType()
         {
             return GetVariableFromType(type).GetType();
         }
+        
     }
 }

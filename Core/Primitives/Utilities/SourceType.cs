@@ -4,6 +4,7 @@ namespace MyonBTS.Core.Primitives.Utilities
     {
         BlackBoard,
         Agent,
+        VariableBoard,
         None
     }
 }
