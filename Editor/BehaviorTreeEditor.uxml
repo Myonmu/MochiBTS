@@ -1,9 +1,9 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
-    <MyonBTS.Editor.SplitView fixed-pane-initial-dimension="300">
-        <MyonBTS.Editor.SplitView orientation="Vertical" fixed-pane-initial-dimension="400">
+    <MochiBTS.Editor.SplitView fixed-pane-initial-dimension="300">
+        <MochiBTS.Editor.SplitView orientation="Vertical" fixed-pane-initial-dimension="400">
             <ui:VisualElement style="padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;">
                 <ui:Label tabindex="-1" text="Inspector" display-tooltip-when-elided="true" style="background-color: rgb(31, 31, 31); padding-left: 5px; padding-top: 4px; padding-bottom: 4px;" />
-                <MyonBTS.Editor.InspectorView style="padding-left: 8px; padding-right: 8px; padding-top: 8px; padding-bottom: 8px;" />
+                <MochiBTS.Editor.InspectorView style="padding-left: 8px; padding-right: 8px; padding-top: 8px; padding-bottom: 8px;" />
             </ui:VisualElement>
             <ui:VisualElement>
                 <ui:Label tabindex="-1" text="Data" display-tooltip-when-elided="true" style="background-color: rgb(31, 31, 31); padding-left: 5px; padding-top: 4px; padding-bottom: 4px;" />
@@ -14,10 +14,10 @@
                     <uie:ToolbarButton tabindex="-1" text="Runner" display-tooltip-when-elided="true" name="runnerButton" />
                 </uie:Toolbar>
                 <ui:ScrollView>
-                    <MyonBTS.Editor.InspectorView name="Blackboard" style="padding-left: 5px; padding-right: 5px; padding-top: 5px; padding-bottom: 5px;" />
+                    <MochiBTS.Editor.InspectorView name="Blackboard" style="padding-left: 5px; padding-right: 5px; padding-top: 5px; padding-bottom: 5px;" />
                 </ui:ScrollView>
             </ui:VisualElement>
-        </MyonBTS.Editor.SplitView>
-        <MyonBTS.Editor.BehaviorTreeView focusable="true" style="flex-grow: 1;" />
-    </MyonBTS.Editor.SplitView>
+        </MochiBTS.Editor.SplitView>
+        <MochiBTS.Editor.BehaviorTreeView focusable="true" style="flex-grow: 1;" />
+    </MochiBTS.Editor.SplitView>
 </ui:UXML>

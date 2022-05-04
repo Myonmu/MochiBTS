@@ -8,7 +8,7 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Node = MochiBTS.Core.Primitives.Nodes.Node;
-namespace MyonBTS.Editor
+namespace MochiBTS.Editor
 {
     public class BehaviorTreeView : GraphView
     {
@@ -110,7 +110,7 @@ namespace MyonBTS.Editor
         private void CreateNodeView(Node node)
         {
             var nodeView = new NodeView(node) {
-                OnNodeSelected = OnNodeSelected
+                onNodeSelected = OnNodeSelected
             };
             AddElement(nodeView);
         }

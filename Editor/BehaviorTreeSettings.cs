@@ -1,8 +1,8 @@
 ﻿using UnityEditor;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
-using UnityEditor.UIElements;
-namespace MyonBTS.Editor
+namespace MochiBTS.Editor
 {
 
 // Create a new type of Settings Asset.
@@ -10,6 +10,7 @@ namespace MyonBTS.Editor
         public VisualTreeAsset behaviorTreeXml;
         public StyleSheet behaviorTreeStyle;
         public VisualTreeAsset nodeXml;
+        public StyleSheet nodeStyle;
 
         private static BehaviorTreeSettings FindSettings(){
             var guids = AssetDatabase.FindAssets("t:BehaviorTreeSettings");

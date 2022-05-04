@@ -1,9 +1,8 @@
-﻿using System;
-using MochiBTS.Core.Primitives.Variables;
+﻿using MochiBTS.Core.Primitives.Variables;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
-namespace MyonBTS.Editor
+namespace MochiBTS.Editor
 {
     [CustomEditor(typeof(VariableBoard))]
     public class VariableBoardInspector : UnityEditor.Editor

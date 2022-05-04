@@ -1,7 +1,7 @@
 ﻿using MochiBTS.Core.Primitives.Variables;
 using UnityEditor;
 using UnityEngine;
-namespace MyonBTS.Editor
+namespace MochiBTS.Editor
 {
     [CustomPropertyDrawer(typeof(VariableFactory))]
     public class VariableDrawer : PropertyDrawer

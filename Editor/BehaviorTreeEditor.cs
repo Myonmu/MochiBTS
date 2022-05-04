@@ -7,7 +7,7 @@ using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEngine;
 using UnityEngine.UIElements;
-namespace MyonBTS.Editor
+namespace MochiBTS.Editor
 {
     public class BehaviorTreeEditor : EditorWindow
     {
@@ -110,11 +110,11 @@ namespace MyonBTS.Editor
 
         }
 
-        [MenuItem("BehaviorTreeEditor/Editor ...")]
+        [MenuItem("MochiBTSEditor/Editor")]
         public static void OpenWindow()
         {
             var wnd = GetWindow<BehaviorTreeEditor>();
-            wnd.titleContent = new GUIContent("BehaviorTreeEditor");
+            wnd.titleContent = new GUIContent("MochiBTSEditor");
         }
 
         private void OnPlayModeStateChanged(PlayModeStateChange obj)

@@ -1,5 +1,5 @@
 ﻿using UnityEngine.UIElements;
-namespace MyonBTS.Editor
+namespace MochiBTS.Editor
 {
     public class SplitView : TwoPaneSplitView
     {

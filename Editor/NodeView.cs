@@ -6,17 +6,19 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Node = UnityEditor.Experimental.GraphView.Node;
-namespace MyonBTS.Editor
+namespace MochiBTS.Editor
 {
     public sealed class NodeView : Node
     {
         public readonly MochiBTS.Core.Primitives.Nodes.Node node;
         public Port input;
-        public Action<NodeView> OnNodeSelected;
+        public Action<NodeView> onNodeSelected;
         public Port output;
         public NodeView(MochiBTS.Core.Primitives.Nodes.Node nodeRef) :
             base(AssetDatabase.GetAssetPath(BehaviorTreeSettings.GetOrCreateSettings().nodeXml))
         {
+            var settings = BehaviorTreeSettings.GetOrCreateSettings();
+            styleSheets.Add(settings.nodeStyle);
             // Construct the node view from fed Node instance
             node = nodeRef;
             title = nodeRef.name.Replace("Node","");
@@ -113,7 +115,7 @@ namespace MyonBTS.Editor
         public override void OnSelected()
         {
             base.OnSelected();
-            OnNodeSelected?.Invoke(this);
+            onNodeSelected?.Invoke(this);
         }
 
         public void SortChildren()

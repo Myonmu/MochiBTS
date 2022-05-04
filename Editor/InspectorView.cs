@@ -4,7 +4,7 @@ using MochiBTS.Core.Primitives.DataContainers;
 using MochiBTS.Core.Primitives.Variables;
 using UnityEngine;
 using UnityEngine.UIElements;
-namespace MyonBTS.Editor
+namespace MochiBTS.Editor
 {
     public class InspectorView : VisualElement
     {
