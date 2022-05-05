@@ -33,9 +33,6 @@ namespace MochiBTS.Editor
             });
             Add(container);
         }
-        public new class UxmlFactory : UxmlFactory<InspectorView, UxmlTraits>
-        {
-        }
         public void UpdateVariableBoard(VariableBoard variableBoard)
         {
             Clear();
@@ -73,6 +70,8 @@ namespace MochiBTS.Editor
             });
             Add(container);
         }
-        
+        public new class UxmlFactory : UxmlFactory<InspectorView, UxmlTraits>
+        {
+        }
     }
 }

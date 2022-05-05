@@ -9,7 +9,7 @@ namespace MochiBTS.Core.Primitives.DataContainers
         public string sourceName;
         public T value;
 
-        public void GetValue(Agent agent,Blackboard blackboard)
+        public void GetValue(Agent agent, Blackboard blackboard)
         {
             value = sourceType switch {
                 SourceType.BlackBoard => ReflectionUtil.GetValueFromBlackboard<T>(blackboard, sourceName),
@@ -23,13 +23,13 @@ namespace MochiBTS.Core.Primitives.DataContainers
         {
             switch (sourceType) {
                 case SourceType.BlackBoard:
-                    ReflectionUtil.SetFieldValue(blackboard,sourceName,val);
+                    ReflectionUtil.SetFieldValue(blackboard, sourceName, val);
                     break;
                 case SourceType.Agent:
-                    ReflectionUtil.SetFieldValue(agent,sourceName,val);
+                    ReflectionUtil.SetFieldValue(agent, sourceName, val);
                     break;
                 case SourceType.VariableBoard:
-                    agent.variableBoard.SetValue<T>(sourceName,val);
+                    agent.variableBoard.SetValue(sourceName, val);
                     break;
                 case SourceType.None:
                     value = val;

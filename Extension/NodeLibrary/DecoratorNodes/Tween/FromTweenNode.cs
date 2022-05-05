@@ -2,7 +2,7 @@
 using MochiBTS.Extension.Primitives;
 namespace MochiBTS.Extension.NodeLibrary.DecoratorNodes.Tween
 {
-    public class FromTweenNode: TweenDecoratorNode
+    public class FromTweenNode : TweenDecoratorNode
     {
         public override string tooltip =>
             "Sets the connected tweener action node to From";

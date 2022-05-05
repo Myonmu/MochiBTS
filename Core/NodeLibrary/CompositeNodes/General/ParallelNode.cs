@@ -12,9 +12,8 @@ namespace MochiBTS.Core.NodeLibrary.CompositeNodes.General
             "Keeps running if at least one child is running.";
         protected override void OnStart(Agent agent, Blackboard blackboard)
         {
-            if (successThreshold == 0) {
+            if (successThreshold == 0)
                 successThreshold = children.Count;
-            }
         }
         protected override void OnStop(Agent agent, Blackboard blackboard)
         {
@@ -23,7 +22,6 @@ namespace MochiBTS.Core.NodeLibrary.CompositeNodes.General
         protected override State OnUpdate(Agent agent, Blackboard blackboard)
         {
             var successfulNodes = 0;
-            var failureNodes = 0;
             var hasChildrenRunning = false;
             foreach (var node in children) {
                 switch (node.UpdateNode(agent, blackboard)) {

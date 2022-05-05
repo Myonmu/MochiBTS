@@ -5,7 +5,7 @@ using UnityEngine;
 namespace MochiBTS.Core.Primitives.Variables
 {
     [Serializable]
-    public class VariableBoard: MonoBehaviour
+    public class VariableBoard : MonoBehaviour
     {
         public List<VariableFactory> variableList;
         private readonly Dictionary<string, BaseVariable> variables = new();
@@ -17,18 +17,16 @@ namespace MochiBTS.Core.Primitives.Variables
 
         private void InitializeDict()
         {
-            foreach (var produced in variableList.Select(v => v.CreateVariable())) {
-                variables.Add(produced.key,produced);
-            }
+            foreach (var produced in variableList.Select(v => v.CreateVariable()))
+                variables.Add(produced.key, produced);
         }
 
         [ContextMenu("test")]
         private void Show()
         {
             InitializeDict();
-            foreach (var (key,value) in variables) {
+            foreach (var (key, value) in variables)
                 Debug.Log($"{key} : {value.boxedValue}");
-            }
         }
 
         public T GetValue<T>(string key)

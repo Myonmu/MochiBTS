@@ -12,15 +12,14 @@ namespace MochiBTS.Editor
             var varFactory = (VariableFactory)property.boxedValue;
             var originalWidth = position.width;
             position.width = 0.2f * originalWidth;
-            EditorGUI.PropertyField(position,property.FindPropertyRelative("type"), GUIContent.none);
+            EditorGUI.PropertyField(position, property.FindPropertyRelative("type"), GUIContent.none);
             var typeOfVar = varFactory.GetVariableType();
             var specificVar = property.FindPropertyRelative(typeOfVar.Name).Copy();
             position.x += position.width + originalWidth * 0.02f;
-            EditorGUI.PropertyField(position, specificVar.FindPropertyRelative("key"),  GUIContent.none);
+            EditorGUI.PropertyField(position, specificVar.FindPropertyRelative("key"), GUIContent.none);
             position.x += position.width + originalWidth * 0.02f;
             position.width = 0.5f * originalWidth;
-            EditorGUI.PropertyField(position, specificVar.FindPropertyRelative("value"),  GUIContent.none);
+            EditorGUI.PropertyField(position, specificVar.FindPropertyRelative("value"), GUIContent.none);
         }
-       
     }
 }

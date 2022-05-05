@@ -23,7 +23,5 @@ namespace MochiBTS.Core
         {
             tree.ResetTree();
         }
-        
-        
     }
 }

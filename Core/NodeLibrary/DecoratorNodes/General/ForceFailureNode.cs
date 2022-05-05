@@ -17,7 +17,7 @@ namespace MochiBTS.Core.NodeLibrary.DecoratorNodes.General
         }
         protected override State OnUpdate(Agent agent, Blackboard blackboard)
         {
-            child.UpdateNode(agent,blackboard);
+            child.UpdateNode(agent, blackboard);
             return State.Failure;
         }
     }

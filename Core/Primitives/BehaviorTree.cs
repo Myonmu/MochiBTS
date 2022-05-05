@@ -4,7 +4,6 @@ using MochiBTS.Core.Primitives.DataContainers;
 using MochiBTS.Core.Primitives.Nodes;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UIElements;
 namespace MochiBTS.Core.Primitives
 {
     [CreateAssetMenu(fileName = "BehaviorTree", menuName = "BTS/BehaviorTree")]
@@ -17,11 +16,11 @@ namespace MochiBTS.Core.Primitives
         public List<Node> nodes = new();
         public Blackboard blackboard;
         //View Transform
-        [HideInInspector]public Vector3 transformScale;
-        [HideInInspector]public Vector3 transformPosition;
+        [HideInInspector] public Vector3 transformScale;
+        [HideInInspector] public Vector3 transformPosition;
         public Node.State UpdateTree(Agent agent, bool forceExecute = false)
         {
-            if (forceExecute||rootNode.state == Node.State.Running)
+            if (forceExecute || rootNode.state == Node.State.Running)
                 treeState = rootNode.UpdateNode(agent, blackboard);
             return treeState;
         }
@@ -36,7 +35,7 @@ namespace MochiBTS.Core.Primitives
 
         public BehaviorTree Clone()
         {
-            
+
             var tree = Instantiate(this);
             tree.rootNode = tree.rootNode.Clone();
             tree.nodes = new List<Node>();
@@ -44,15 +43,14 @@ namespace MochiBTS.Core.Primitives
                 if (n is null) return;
                 tree.nodes.Add(n);
             });
-            tree.blackboard = Instantiate(blackboard);
+            tree.blackboard = blackboard.Clone();
             return tree;
         }
 
         public void ResetTree()
         {
-            foreach (var node in nodes) {
+            foreach (var node in nodes)
                 node.ResetNode();
-            }
         }
 
         // public void Bind(Agent agent)

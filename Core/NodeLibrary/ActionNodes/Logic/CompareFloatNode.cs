@@ -2,7 +2,7 @@ using System;
 using MochiBTS.Core.Primitives.Nodes;
 namespace MochiBTS.Core.NodeLibrary.ActionNodes.Logic
 {
-    public class CompareFloatNode: ComparatorNode<float>
+    public class CompareFloatNode : ComparatorNode<float>
     {
 
         protected override bool GreaterThan(float l, float r)

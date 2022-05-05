@@ -10,23 +10,23 @@ namespace MochiBTS.Editor
 {
     public sealed class NodeView : Node
     {
-        public readonly MochiBTS.Core.Primitives.Nodes.Node node;
+        public readonly Core.Primitives.Nodes.Node node;
         public Port input;
         public Action<NodeView> onNodeSelected;
         public Port output;
-        public NodeView(MochiBTS.Core.Primitives.Nodes.Node nodeRef) :
+        public NodeView(Core.Primitives.Nodes.Node nodeRef) :
             base(AssetDatabase.GetAssetPath(BehaviorTreeSettings.GetOrCreateSettings().nodeXml))
         {
             var settings = BehaviorTreeSettings.GetOrCreateSettings();
             styleSheets.Add(settings.nodeStyle);
             // Construct the node view from fed Node instance
             node = nodeRef;
-            title = nodeRef.name.Replace("Node","");
+            title = nodeRef.name.Replace("Node", "");
             viewDataKey = node.guid;
             style.left = node.position.x;
             style.top = node.position.y;
             tooltip = node.tooltip;
-            
+
 
             //Construct ports
             CreateInputPorts();
@@ -124,7 +124,7 @@ namespace MochiBTS.Editor
             if (composite && composite.children is not null)
                 composite.children.Sort(SortByHorizontalPosition);
         }
-        private static int SortByHorizontalPosition(MochiBTS.Core.Primitives.Nodes.Node x, MochiBTS.Core.Primitives.Nodes.Node y)
+        private static int SortByHorizontalPosition(Core.Primitives.Nodes.Node x, Core.Primitives.Nodes.Node y)
         {
             return x.position.x < y.position.x ? -1 : 1;
         }
@@ -138,13 +138,13 @@ namespace MochiBTS.Editor
             if (!Application.isPlaying) return;
             // Add uss class labels according to the node's state 
             switch (node.state) {
-                case MochiBTS.Core.Primitives.Nodes.Node.State.Running:
+                case Core.Primitives.Nodes.Node.State.Running:
                     if (node.started) AddToClassList("running");
                     break;
-                case MochiBTS.Core.Primitives.Nodes.Node.State.Failure:
+                case Core.Primitives.Nodes.Node.State.Failure:
                     AddToClassList("failure");
                     break;
-                case MochiBTS.Core.Primitives.Nodes.Node.State.Success:
+                case Core.Primitives.Nodes.Node.State.Success:
                     AddToClassList("success");
                     break;
                 default:

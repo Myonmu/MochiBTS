@@ -3,7 +3,7 @@ namespace MochiBTS.Core.Primitives.Nodes
 {
     public abstract class DecoratorNode : Node
     {
-        [HideInInspector]public Node child;
+        [HideInInspector] public Node child;
 
         public override Node Clone()
         {

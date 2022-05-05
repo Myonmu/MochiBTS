@@ -13,7 +13,7 @@ namespace MochiBTS.Editor
         {
             reorderableList = new ReorderableList(serializedObject, serializedObject.FindProperty("variableList"));
             reorderableList.drawElementCallback += (rect, index, active, focused) => {
-                SerializedProperty property = reorderableList.serializedProperty.GetArrayElementAtIndex(index);
+                var property = reorderableList.serializedProperty.GetArrayElementAtIndex(index);
                 EditorGUI.PropertyField(rect, property, GUIContent.none);
             };
             reorderableList.drawHeaderCallback += rect => {

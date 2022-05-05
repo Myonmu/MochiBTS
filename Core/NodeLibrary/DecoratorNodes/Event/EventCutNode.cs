@@ -2,21 +2,21 @@
 using MochiBTS.Core.Primitives.DataContainers;
 using MochiBTS.Core.Primitives.Events;
 using MochiBTS.Core.Primitives.Nodes;
-using UnityEngine;
 namespace MochiBTS.Core.NodeLibrary.DecoratorNodes.Event
 {
-    public class InterruptNode : DecoratorNode, IListener
+    public class EventCutNode : DecoratorNode, IListener
     {
         public string soEventName;
+        public State outputState = State.Success;
+        private bool cutoff;
         private ISubscribable soEvent;
-        private Node targetNode;
         public override string tooltip =>
-            "Calls Interrupt on the closest interruptable action node upon SO event triggering. " +
-            "The SO must implement ISubscribable.";
+            "Executes its child normally, until the assigned Event is triggered." +
+            " After the event is triggered, this node will no longer executes its child" +
+            ", instead returns outputState directly. ";
         public void OnEventReceive()
         {
-            if (targetNode is IInterruptable interruptable)
-                interruptable.OnInterrupt();
+            cutoff = true;
         }
         protected override void OnStart(Agent agent, Blackboard blackboard)
         {
@@ -26,12 +26,6 @@ namespace MochiBTS.Core.NodeLibrary.DecoratorNodes.Event
                 break;
             }
             soEvent?.Subscribe(this);
-            if (targetNode is not null) return;
-            targetNode = child;
-            while (targetNode is DecoratorNode decoratorNode)
-                targetNode = decoratorNode.child;
-            if (targetNode is not IInterruptable)
-                Debug.LogError($"{GetType().Name}: Can't find Interruptable node to decorate.");
         }
         protected override void OnStop(Agent agent, Blackboard blackboard)
         {
@@ -39,7 +33,7 @@ namespace MochiBTS.Core.NodeLibrary.DecoratorNodes.Event
         }
         protected override State OnUpdate(Agent agent, Blackboard blackboard)
         {
-            return child.UpdateNode(agent, blackboard);
+            return cutoff ? outputState : child.UpdateNode(agent, blackboard);
         }
     }
 }

@@ -13,18 +13,18 @@ namespace MochiBTS.Editor
     {
         [SerializeField]
         private VisualTreeAsset visualTree;
-        private BehaviorTreeSettings settings;
+        private Agent agent;
+        private InspectorView blackboardView;
         //private SerializedProperty blackboardProperty;
-        
+
         //private IMGUIContainer blackboardView;
         private InspectorView inspectorView;
-        private InspectorView blackboardView;
+        private TreeRunner runner;
+        private BehaviorTreeSettings settings;
 
         //private SerializedObject treeObject;
         private BehaviorTreeView treeView;
         private VariableBoard variableBoard;
-        private Agent agent;
-        private TreeRunner runner;
 
         private void OnEnable()
         {
@@ -55,7 +55,7 @@ namespace MochiBTS.Editor
             treeView = root.Q<BehaviorTreeView>();
             treeView.AddSearchWindow(this);
             inspectorView = root.Q<InspectorView>();
-            blackboardView = root.Q<InspectorView>(name:"Blackboard");
+            blackboardView = root.Q<InspectorView>("Blackboard");
             // blackboardView = root.Q<IMGUIContainer>();
             // blackboardView.onGUIHandler = () => {
             //     if (treeObject?.targetObject is null) return;
@@ -86,13 +86,11 @@ namespace MochiBTS.Editor
             if (!tree)
                 if (Selection.activeObject is GameObject gameObject) {
                     runner = gameObject.GetComponent<TreeRunner>();
-                    if (runner) {
+                    if (runner)
                         tree = runner.tree;
-                    }
                     agent = gameObject.GetComponent<Agent>();
-                    if (agent) {
+                    if (agent)
                         variableBoard = agent.variableBoard;
-                    }
                 }
             if (Application.isPlaying) {
                 if (tree)
@@ -102,13 +100,11 @@ namespace MochiBTS.Editor
                     treeView?.PopulateView(tree);
             }
 
-            if (tree != null) {
-                blackboardView?.UpdateBlackBoard(tree);
+            if (tree != null) blackboardView?.UpdateBlackBoard(tree);
             //     treeObject = new SerializedObject(tree);
             //     blackboardProperty = treeObject.FindProperty("blackboard");
-            }
 
-            
+
 
         }
 

@@ -5,12 +5,16 @@ namespace MochiBTS.Core.Primitives.Variables
     [Serializable]
     public class VariableFactory
     {
-        public VariableType type;
         // ======1====== Add an entry in the enum
         public enum VariableType
         {
-            Bool,Integer,Float,Vector3,Transform
+            Bool,
+            Integer,
+            Float,
+            Vector3,
+            Transform
         }
+        public VariableType type;
 
         // ======2====== Add a public field of the corresponding type
         // !!!!! Field name and field type must be the same!
@@ -20,7 +24,7 @@ namespace MochiBTS.Core.Primitives.Variables
         public Vector3Variable Vector3Variable = new();
         public TransformVariable TransformVariable = new();
 
-       
+
         // ======3====== Add a new case to return the field.
         private BaseVariable GetVariableFromType(VariableType variableType)
         {
@@ -44,6 +48,5 @@ namespace MochiBTS.Core.Primitives.Variables
         {
             return GetVariableFromType(type).GetType();
         }
-        
     }
 }

@@ -21,7 +21,7 @@ namespace MochiBTS.Core.NodeLibrary.DecoratorNodes.General
         }
         protected override State OnUpdate(Agent agent, Blackboard blackboard)
         {
-            if (child.UpdateNode(agent,blackboard) is State.Success)
+            if (child.UpdateNode(agent, blackboard) is State.Success)
                 loopCounter--;
             return infiniteLoop ? State.Running : loopCounter <= 0 ? State.Success : State.Running;
         }

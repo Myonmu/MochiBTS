@@ -4,7 +4,7 @@ namespace MochiBTS.Core.Primitives.Nodes
 {
     public abstract class CompositeNode : Node
     {
-        [HideInInspector]public List<Node> children = new();
+        [HideInInspector] public List<Node> children = new();
 
         public override Node Clone()
         {

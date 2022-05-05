@@ -4,7 +4,7 @@ using MochiBTS.Extension.Primitives;
 using UnityEngine;
 namespace MochiBTS.Extension.NodeLibrary.ActionNodes.Tween
 {
-    public class TweenLookAtPointNode: TweenerNode
+    public class TweenLookAtPointNode : TweenerNode
     {
         public DataSource<Vector3> target;
         public DataSource<Vector3> baseVector;
@@ -12,9 +12,9 @@ namespace MochiBTS.Extension.NodeLibrary.ActionNodes.Tween
 
         protected override void InitializeTweener(Agent agent, Blackboard blackboard)
         {
-            target.GetValue(agent,blackboard);
-            baseVector.GetValue(agent,blackboard);
-            tweener = agent.transform.DOLookAt(target.value, duration, axisConstraint,baseVector.value);
+            target.GetValue(agent, blackboard);
+            baseVector.GetValue(agent, blackboard);
+            tweener = agent.transform.DOLookAt(target.value, duration, axisConstraint, baseVector.value);
         }
     }
 }

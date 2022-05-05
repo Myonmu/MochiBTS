@@ -1,22 +1,20 @@
-﻿using System.Linq;
+using System.Linq;
 using MochiBTS.Core.Primitives.DataContainers;
 using MochiBTS.Core.Primitives.Events;
 using MochiBTS.Core.Primitives.Nodes;
-using UnityEngine;
-namespace MochiBTS.Core.NodeLibrary.DecoratorNodes.Event
+namespace MochiBTS.Core.NodeLibrary.ActionNodes.Event
 {
-    public class InterruptNode : DecoratorNode, IListener
+    public class WaitForEventNode : ActionNode, IListener
     {
+        public State outputState;
         public string soEventName;
         private ISubscribable soEvent;
-        private Node targetNode;
+
         public override string tooltip =>
-            "Calls Interrupt on the closest interruptable action node upon SO event triggering. " +
-            "The SO must implement ISubscribable.";
+            "Keeps running until the assigned Event is invoked. Returns outputState afterwards.";
         public void OnEventReceive()
         {
-            if (targetNode is IInterruptable interruptable)
-                interruptable.OnInterrupt();
+            state = outputState;
         }
         protected override void OnStart(Agent agent, Blackboard blackboard)
         {
@@ -25,13 +23,8 @@ namespace MochiBTS.Core.NodeLibrary.DecoratorNodes.Event
                     soEvent = subscribable;
                 break;
             }
+            state = State.Running;
             soEvent?.Subscribe(this);
-            if (targetNode is not null) return;
-            targetNode = child;
-            while (targetNode is DecoratorNode decoratorNode)
-                targetNode = decoratorNode.child;
-            if (targetNode is not IInterruptable)
-                Debug.LogError($"{GetType().Name}: Can't find Interruptable node to decorate.");
         }
         protected override void OnStop(Agent agent, Blackboard blackboard)
         {
@@ -39,7 +32,7 @@ namespace MochiBTS.Core.NodeLibrary.DecoratorNodes.Event
         }
         protected override State OnUpdate(Agent agent, Blackboard blackboard)
         {
-            return child.UpdateNode(agent, blackboard);
+            return state;
         }
     }
 }

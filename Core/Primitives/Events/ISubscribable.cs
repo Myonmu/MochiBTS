@@ -1,4 +1,4 @@
-﻿namespace MochiBTS.Core.Primitives.Utilities.Event
+﻿namespace MochiBTS.Core.Primitives.Events
 {
     public interface ISubscribable
     {

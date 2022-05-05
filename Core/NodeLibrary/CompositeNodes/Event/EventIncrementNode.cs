@@ -2,21 +2,22 @@
 using MochiBTS.Core.Primitives.DataContainers;
 using MochiBTS.Core.Primitives.Events;
 using MochiBTS.Core.Primitives.Nodes;
-using UnityEngine;
-namespace MochiBTS.Core.NodeLibrary.DecoratorNodes.Event
+namespace MochiBTS.Core.NodeLibrary.CompositeNodes.Event
 {
-    public class InterruptNode : DecoratorNode, IListener
+    public class EventIncrementNode : CompositeNode, IListener
     {
         public string soEventName;
+        private int currentChildIndex;
         private ISubscribable soEvent;
-        private Node targetNode;
+
         public override string tooltip =>
-            "Calls Interrupt on the closest interruptable action node upon SO event triggering. " +
-            "The SO must implement ISubscribable.";
+            "Executes its children from left to right, returns the update result of the child. " +
+            "Will only switch to the next child upon reception" +
+            " of the assigned btsEvent. Returns success if reaches the end.";
+
         public void OnEventReceive()
         {
-            if (targetNode is IInterruptable interruptable)
-                interruptable.OnInterrupt();
+            currentChildIndex++;
         }
         protected override void OnStart(Agent agent, Blackboard blackboard)
         {
@@ -26,12 +27,6 @@ namespace MochiBTS.Core.NodeLibrary.DecoratorNodes.Event
                 break;
             }
             soEvent?.Subscribe(this);
-            if (targetNode is not null) return;
-            targetNode = child;
-            while (targetNode is DecoratorNode decoratorNode)
-                targetNode = decoratorNode.child;
-            if (targetNode is not IInterruptable)
-                Debug.LogError($"{GetType().Name}: Can't find Interruptable node to decorate.");
         }
         protected override void OnStop(Agent agent, Blackboard blackboard)
         {
@@ -39,7 +34,7 @@ namespace MochiBTS.Core.NodeLibrary.DecoratorNodes.Event
         }
         protected override State OnUpdate(Agent agent, Blackboard blackboard)
         {
-            return child.UpdateNode(agent, blackboard);
+            return currentChildIndex >= children.Count ? State.Success : children[currentChildIndex].UpdateNode(agent, blackboard);
         }
     }
 }

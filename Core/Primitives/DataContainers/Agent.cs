@@ -7,6 +7,5 @@ namespace MochiBTS.Core.Primitives.DataContainers
     public class Agent : MonoBehaviour
     {
         public VariableBoard variableBoard;
-
     }
 }

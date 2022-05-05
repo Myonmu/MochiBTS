@@ -8,7 +8,7 @@ namespace MochiBTS.Core.NodeLibrary.ActionNodes.General
     {
         public BehaviorTree subTree;
         public bool inheritBlackboard = true;
-        public bool forceExecuteTree = false;
+        public bool forceExecuteTree;
         public override string tooltip =>
             "Execute the behavior tree attached to this node. Will create a copy of the attached tree." +
             "Assigning the same tree that contains this node will cause explosion, NEVER DO THAT!";
@@ -25,7 +25,7 @@ namespace MochiBTS.Core.NodeLibrary.ActionNodes.General
         protected override State OnUpdate(Agent agent, Blackboard blackboard)
         {
             if (subTree is not null) {
-                var treeState = subTree.UpdateTree(agent,forceExecute:forceExecuteTree);
+                var treeState = subTree.UpdateTree(agent, forceExecuteTree);
                 return treeState;
             }
             Debug.LogError("SubTree node has no tree assigned!");

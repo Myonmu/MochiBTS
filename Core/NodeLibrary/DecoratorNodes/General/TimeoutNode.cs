@@ -3,7 +3,7 @@ using MochiBTS.Core.Primitives.Nodes;
 using UnityEngine;
 namespace MochiBTS.Core.NodeLibrary.DecoratorNodes.General
 {
-    public class TimeoutNode: DecoratorNode
+    public class TimeoutNode : DecoratorNode
     {
         public float duration = 1;
         private float startTime;
@@ -11,7 +11,7 @@ namespace MochiBTS.Core.NodeLibrary.DecoratorNodes.General
             "Will keep running and updating its child if duration is not reached, " +
             "counting from the start of the node. Succeeds afterwards and will stop" +
             "updating its child.";
-        
+
         protected override void OnStart(Agent agent, Blackboard blackboard)
         {
             startTime = Time.time;

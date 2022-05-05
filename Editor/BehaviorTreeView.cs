@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using MochiBTS.Core.Primitives;
-using MochiBTS.Core.Primitives.DataContainers;
 using MochiBTS.Core.Primitives.Nodes;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
@@ -15,8 +14,8 @@ namespace MochiBTS.Editor
     {
         public Action<NodeView> onNodeSelected;
         private NodeSearchWindow searchWindow;
+        private readonly BehaviorTreeSettings settings;
         public BehaviorTree tree;
-        private BehaviorTreeSettings settings;
         public BehaviorTreeView()
         {
             settings = BehaviorTreeSettings.GetOrCreateSettings();
@@ -71,9 +70,9 @@ namespace MochiBTS.Editor
                     AddElement(edge);
                 });
             });
-            if(tree.transformScale == Vector3.zero) tree.transformScale = Vector3.one;
-            UpdateViewTransform(tree.transformPosition,tree.transformScale);
-            
+            if (tree.transformScale == Vector3.zero) tree.transformScale = Vector3.one;
+            UpdateViewTransform(tree.transformPosition, tree.transformScale);
+
         }
 
         private NodeView FindNodeView(Node node)

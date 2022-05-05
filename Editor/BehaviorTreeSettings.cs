@@ -6,17 +6,18 @@ using UnityEngine.UIElements;
 //Adjusted version based on The Kiwi Coder's original version. 
 namespace MochiBTS.Editor
 {
-    internal class BehaviorTreeSettings : ScriptableObject {
+    internal class BehaviorTreeSettings : ScriptableObject
+    {
         public VisualTreeAsset behaviorTreeXml;
         public StyleSheet behaviorTreeStyle;
         public VisualTreeAsset nodeXml;
         public StyleSheet nodeStyle;
 
-        private static BehaviorTreeSettings FindSettings(){
+        private static BehaviorTreeSettings FindSettings()
+        {
             var guids = AssetDatabase.FindAssets("t:BehaviorTreeSettings");
-            if (guids.Length > 1) {
-                Debug.LogWarning($"Found multiple settings files, using the first.");
-            }
+            if (guids.Length > 1)
+                Debug.LogWarning("Found multiple settings files, using the first.");
 
             switch (guids.Length) {
                 case 0:
@@ -28,7 +29,8 @@ namespace MochiBTS.Editor
             }
         }
 
-        internal static BehaviorTreeSettings GetOrCreateSettings() {
+        internal static BehaviorTreeSettings GetOrCreateSettings()
+        {
             var settings = FindSettings();
             if (settings != null)
                 return settings;
@@ -38,15 +40,18 @@ namespace MochiBTS.Editor
             return settings;
         }
 
-        internal static SerializedObject GetSerializedSettings() {
+        internal static SerializedObject GetSerializedSettings()
+        {
             return new SerializedObject(GetOrCreateSettings());
         }
     }
 
 // Register a SettingsProvider using UIElements for the drawing framework:
-    static class MyCustomSettingsUIElementsRegister {
+    internal static class MyCustomSettingsUIElementsRegister
+    {
         [SettingsProvider]
-        public static SettingsProvider CreateMyCustomSettingsProvider() {
+        public static SettingsProvider CreateMyCustomSettingsProvider()
+        {
             // First parameter is the path in the Settings window.
             // Second parameter is the scope of this setting: it only appears in the Settings window for the Project scope.
             var provider = new SettingsProvider("Project/MyCustomUIElementsSettings", SettingsScope.Project) {
@@ -57,15 +62,14 @@ namespace MochiBTS.Editor
 
                     // rootElement is a VisualElement. If you add any children to it, the OnGUI function
                     // isn't called because the SettingsProvider uses the UIElements drawing framework.
-                    var title = new Label() {
+                    var title = new Label {
                         text = "Behavior Tree Settings"
                     };
                     title.AddToClassList("title");
                     rootElement.Add(title);
 
-                    var properties = new VisualElement() {
-                        style =
-                        {
+                    var properties = new VisualElement {
+                        style = {
                             flexDirection = FlexDirection.Column
                         }
                     };
@@ -75,7 +79,7 @@ namespace MochiBTS.Editor
                     properties.Add(new InspectorElement(settings));
 
                     rootElement.Bind(settings);
-                },
+                }
             };
 
             return provider;

@@ -4,7 +4,7 @@ namespace MochiBTS.Core.Primitives.Utilities
     {
         GreaterThan,
         LessThan,
-        EqualTo,
-        
+        EqualTo
+
     }
 }
