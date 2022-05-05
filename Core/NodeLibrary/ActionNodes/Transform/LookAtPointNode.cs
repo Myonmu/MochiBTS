@@ -12,8 +12,8 @@ namespace MochiBTS.Core.NodeLibrary.ActionNodes.Transform
         private Vector3 actualBase;
          protected override void OnStart(Agent agent, Blackboard blackboard)
         {
-            baseDirection.ObtainValue(agent,blackboard);
-            targetPoint.ObtainValue(agent,blackboard);
+            baseDirection.GetValue(agent,blackboard);
+            targetPoint.GetValue(agent,blackboard);
             actualBase = useLocalBase ? agent.transform.TransformDirection(baseDirection.value) : baseDirection.value;
         }
         protected override void OnStop(Agent agent, Blackboard blackboard)

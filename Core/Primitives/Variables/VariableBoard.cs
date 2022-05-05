@@ -36,6 +36,11 @@ namespace MochiBTS.Core.Primitives.Variables
             return (T)variables[key].boxedValue;
         }
 
+        public void SetValue<T>(string key, T val)
+        {
+            variables[key].boxedValue = val;
+        }
+
         public List<string> GetEntrySet()
         {
             return variables.Keys.ToList();

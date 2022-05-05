@@ -3,23 +3,26 @@ using MochiBTS.Core.Primitives.Nodes;
 using UnityEngine;
 namespace MochiBTS.Core.NodeLibrary.ActionNodes.Transform
 {
-    public class RotateAngleNode: ActionNode
+    public class MoveInDirectionNode: ActionNode
     {
-        public bool useLocalSpace;
-        public DataSource<Vector3> angle;
+
+        public DataSource<Vector3> direction;
+        public float speed = 1;
         protected override void OnStart(Agent agent, Blackboard blackboard)
         {
-            angle.GetValue(agent,blackboard);
+            direction.GetValue(agent,blackboard);
         }
         protected override void OnStop(Agent agent, Blackboard blackboard)
         {
-
+            
         }
         protected override State OnUpdate(Agent agent, Blackboard blackboard)
         {
-            agent.transform.Rotate(angle.value, useLocalSpace? Space.Self:Space.World);
-            return State.Success;
-            
+            var agentTransform = agent.transform;
+            var agentPosition = agentTransform.position;
+            agentPosition += direction.value.normalized * Time.deltaTime * speed;
+            agentTransform.position = agentPosition;
+            return State.Running;
         }
     }
 }

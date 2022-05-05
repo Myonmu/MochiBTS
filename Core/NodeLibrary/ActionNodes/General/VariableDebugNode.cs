@@ -1,25 +1,24 @@
 ﻿using MochiBTS.Core.Primitives.DataContainers;
 using MochiBTS.Core.Primitives.Nodes;
 using UnityEngine;
-namespace MochiBTS.Core.NodeLibrary.ActionNodes.Transform
+namespace MochiBTS.Core.NodeLibrary.ActionNodes.General
 {
-    public class RotateAngleNode: ActionNode
+    public class VariableDebugNode : ActionNode
     {
-        public bool useLocalSpace;
-        public DataSource<Vector3> angle;
+
+        public DataSource<object> variable;
         protected override void OnStart(Agent agent, Blackboard blackboard)
         {
-            angle.GetValue(agent,blackboard);
+            variable.GetValue(agent,blackboard);
         }
         protected override void OnStop(Agent agent, Blackboard blackboard)
         {
-
+  
         }
         protected override State OnUpdate(Agent agent, Blackboard blackboard)
         {
-            agent.transform.Rotate(angle.value, useLocalSpace? Space.Self:Space.World);
+            Debug.Log(variable.value);
             return State.Success;
-            
         }
     }
 }

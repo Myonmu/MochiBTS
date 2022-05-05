@@ -2,13 +2,14 @@
 {
     public abstract class DataProcessor<T> : BaseDataProcessor
     {
-        public override void Process(object o)
+        public override object Process(object o)
         {
             if (o is T t) {
-                OnProcess(t);
+                return OnProcess(t);
             }
+            return o;
         }
 
-        protected abstract void OnProcess(T o);
+        protected abstract T OnProcess(T o);
     }
 }

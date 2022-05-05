@@ -3,7 +3,7 @@ using UnityEngine;
 namespace MochiBTS.Core.Primitives.Utilities.Event
 {
     [CreateAssetMenu(fileName = "BTSEvent", menuName = "BTS/BTS Event")]
-    public class BtsEvent : ScriptableObject, IInvokable
+    public class BtsEvent : ScriptableObject, IInvokable, ISubscribable
     {
         [TextArea] [SerializeField] private string eventDescription;
         private readonly List<IListener> subscribers = new();
@@ -24,6 +24,14 @@ namespace MochiBTS.Core.Primitives.Utilities.Event
         {
             evt.subscribers.Remove(sub);
             return evt;
+        }
+        public void Subscribe(IListener listener)
+        {
+            subscribers.Add(listener);
+        }
+        public void Unsubscribe(IListener listener)
+        {
+            subscribers.Remove(listener);
         }
     }
 }

@@ -16,7 +16,7 @@ namespace MochiBTS.Core.NodeLibrary.ActionNodes.Transform
 
         protected override void OnStart(Agent agent, Blackboard blackboard)
         {
-            destination.ObtainValue(agent,blackboard);
+            destination.GetValue(agent,blackboard);
             sqrTolerance = tolerance * tolerance;
         }
         protected override void OnStop(Agent agent, Blackboard blackboard)

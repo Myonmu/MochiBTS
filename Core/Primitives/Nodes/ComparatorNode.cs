@@ -14,8 +14,8 @@ namespace MochiBTS.Core.Primitives.Nodes
         public DataSource<T> right;
         protected override void OnStart(Agent agent, Blackboard blackboard)
         {
-            left.ObtainValue(agent,blackboard);
-            right.ObtainValue(agent,blackboard);
+            left.GetValue(agent,blackboard);
+            right.GetValue(agent,blackboard);
         }
 
         protected override void OnStop(Agent agent, Blackboard blackboard)

@@ -14,7 +14,7 @@ namespace MochiBTS.Core.Primitives.Nodes
         protected override void OnStart(Agent agent, Blackboard blackboard)
         {
             animator ??= agent.GetComponent<Animator>();
-            parameter.ObtainValue(agent,blackboard);
+            parameter.GetValue(agent,blackboard);
         }
         protected override void OnStop(Agent agent, Blackboard blackboard)
         {

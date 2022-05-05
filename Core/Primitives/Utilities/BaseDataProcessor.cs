@@ -3,6 +3,6 @@ namespace MochiBTS.Core.Primitives.Utilities
 {
     public class BaseDataProcessor: ScriptableObject
     {
-        public virtual void Process(object o) {}
+        public virtual object Process(object o) { return o; }
     }
 }

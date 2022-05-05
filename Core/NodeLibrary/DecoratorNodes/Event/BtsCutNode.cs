@@ -2,23 +2,16 @@
 using MochiBTS.Core.Primitives.Nodes;
 using MochiBTS.Core.Primitives.Utilities.Event;
 using UnityEngine;
-using UnityEngine.Serialization;
 namespace MochiBTS.Core.NodeLibrary.DecoratorNodes.Event
 {
-    public class BtsInterruptNode: DecoratorNode, IListener
+    public class BtsCutNode: DecoratorNode, IListener
     {
         public BtsEvent btsEvent;
-        private Node targetNode;
+        public State outputState = State.Success;
+        private bool cutoff = false;
         protected override void OnStart(Agent agent, Blackboard blackboard)
         {
             btsEvent.Subscribe(this);
-            targetNode = child;
-            while (targetNode is DecoratorNode decoratorNode ) {
-                targetNode = decoratorNode.child;
-            }
-            if (targetNode is not IInterruptable){
-                Debug.LogError($"{GetType().Name}: Can't find Interruptable node to decorate.");
-            }
         }
         protected override void OnStop(Agent agent, Blackboard blackboard)
         {
@@ -26,13 +19,11 @@ namespace MochiBTS.Core.NodeLibrary.DecoratorNodes.Event
         }
         protected override Node.State OnUpdate(Agent agent, Blackboard blackboard)
         {
-            return child.UpdateNode(agent,blackboard);
+            return cutoff ?  outputState:child.UpdateNode(agent,blackboard);
         }
         public void OnEventReceive()
         {
-            if (targetNode is IInterruptable interruptable) {
-                interruptable.OnInterrupt();
-            }
+            cutoff = true;
         }
     }
 }

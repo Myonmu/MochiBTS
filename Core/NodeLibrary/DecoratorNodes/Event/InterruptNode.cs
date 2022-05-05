@@ -2,16 +2,18 @@
 using MochiBTS.Core.Primitives.Nodes;
 using MochiBTS.Core.Primitives.Utilities.Event;
 using UnityEngine;
-using UnityEngine.Serialization;
 namespace MochiBTS.Core.NodeLibrary.DecoratorNodes.Event
 {
-    public class BtsInterruptNode: DecoratorNode, IListener
+    public class InterruptNode: DecoratorNode, IListener
     {
-        public BtsEvent btsEvent;
+        
+        public ScriptableObject soEvent;
         private Node targetNode;
         protected override void OnStart(Agent agent, Blackboard blackboard)
         {
-            btsEvent.Subscribe(this);
+            if (soEvent is ISubscribable subscribable) {
+                subscribable.Subscribe(this);
+            }
             targetNode = child;
             while (targetNode is DecoratorNode decoratorNode ) {
                 targetNode = decoratorNode.child;
@@ -22,9 +24,11 @@ namespace MochiBTS.Core.NodeLibrary.DecoratorNodes.Event
         }
         protected override void OnStop(Agent agent, Blackboard blackboard)
         {
-            btsEvent.Unsubscribe(this);
+            if (soEvent is ISubscribable subscribable) {
+                subscribable.Unsubscribe(this);
+            }
         }
-        protected override Node.State OnUpdate(Agent agent, Blackboard blackboard)
+        protected override State OnUpdate(Agent agent, Blackboard blackboard)
         {
             return child.UpdateNode(agent,blackboard);
         }
