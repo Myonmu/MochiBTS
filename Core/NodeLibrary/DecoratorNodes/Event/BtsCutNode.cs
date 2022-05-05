@@ -6,6 +6,10 @@ namespace MochiBTS.Core.NodeLibrary.DecoratorNodes.Event
 {
     public class BtsCutNode: DecoratorNode, IListener
     {
+        public override string tooltip =>
+            "Executes its child normally, until the assigned BtsEvent is triggered." +
+            " After the event is triggered, this node will no longer executes its child" +
+            ", instead returns outputState directly. ";
         public BtsEvent btsEvent;
         public State outputState = State.Success;
         private bool cutoff = false;

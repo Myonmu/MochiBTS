@@ -6,6 +6,9 @@ namespace MochiBTS.Core.NodeLibrary.ActionNodes.General
 {
     public class ProcessVariableMultiNode: ActionNode
     {
+        public override string tooltip =>
+            "Applies a list of processors to 2 variables, store the result in a 3rd variable." +
+            "Immediately succeeds.";
         public DataSource<object> variableA;
         public DataSource<object> variableB;
         public DataSource<object> outputVariable;

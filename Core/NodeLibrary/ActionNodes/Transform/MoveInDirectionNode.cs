@@ -6,6 +6,8 @@ namespace MochiBTS.Core.NodeLibrary.ActionNodes.Transform
     public class MoveInDirectionNode: ActionNode
     {
 
+        public override string tooltip =>
+            "Moves the object in the given direction. Immediately succeeds.";
         public DataSource<Vector3> direction;
         public float speed = 1;
         protected override void OnStart(Agent agent, Blackboard blackboard)
@@ -22,7 +24,7 @@ namespace MochiBTS.Core.NodeLibrary.ActionNodes.Transform
             var agentPosition = agentTransform.position;
             agentPosition += direction.value.normalized * Time.deltaTime * speed;
             agentTransform.position = agentPosition;
-            return State.Running;
+            return State.Success;
         }
     }
 }

@@ -9,6 +9,8 @@ namespace MochiBTS.Core.NodeLibrary.ActionNodes.General
     public class ProcessVariableNode: ActionNode
     {
 
+        public override string tooltip =>
+            "Apply a list of processors to a variable, immediately succeeds.";
         public DataSource<object> variable;
         public List<BaseDataProcessor> processors;
         protected override void OnStart(Agent agent, Blackboard blackboard)

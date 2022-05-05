@@ -2,10 +2,10 @@
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
+
+//Adjusted version based on The Kiwi Coder's original version. 
 namespace MochiBTS.Editor
 {
-
-// Create a new type of Settings Asset.
     internal class BehaviorTreeSettings : ScriptableObject {
         public VisualTreeAsset behaviorTreeXml;
         public StyleSheet behaviorTreeStyle;
@@ -33,7 +33,7 @@ namespace MochiBTS.Editor
             if (settings != null)
                 return settings;
             settings = CreateInstance<BehaviorTreeSettings>();
-            AssetDatabase.CreateAsset(settings, "Assets/MyonBTS/BehaviourTreeSettings.asset");
+            AssetDatabase.CreateAsset(settings, "Assets/MochiBTS/BehaviourTreeSettings.asset");
             AssetDatabase.SaveAssets();
             return settings;
         }

@@ -6,6 +6,9 @@ namespace MochiBTS.Core.NodeLibrary.DecoratorNodes.General
 {
     public class BreakTriggerNode: DecoratorNode
     {
+        public override string tooltip =>
+            "Pauses the editor when the child returns a state equal to triggerState, or not equal to triggerState" +
+            " if notEqualTo is true. PassThrough indicates whether to return child's state or Running.";
         public State triggerState;
         public bool passThrough = true;
         public bool notEqualTo = false;

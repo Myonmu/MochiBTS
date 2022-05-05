@@ -6,7 +6,9 @@ namespace MochiBTS.Core.NodeLibrary.DecoratorNodes.Event
 {
     public class InterruptNode: DecoratorNode, IListener
     {
-        
+        public override string tooltip =>
+            "Calls Interrupt on the closest interruptable action node upon SO event triggering. " +
+            "The SO must implement ISubscribable.";
         public ScriptableObject soEvent;
         private Node targetNode;
         protected override void OnStart(Agent agent, Blackboard blackboard)
@@ -14,6 +16,7 @@ namespace MochiBTS.Core.NodeLibrary.DecoratorNodes.Event
             if (soEvent is ISubscribable subscribable) {
                 subscribable.Subscribe(this);
             }
+            if (targetNode is not null) return;
             targetNode = child;
             while (targetNode is DecoratorNode decoratorNode ) {
                 targetNode = decoratorNode.child;

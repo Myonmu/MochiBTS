@@ -6,6 +6,9 @@ namespace MochiBTS.Core.NodeLibrary.ActionNodes.Transform
 {
     public class LookAtPointNode: ActionNode
     {
+        public override string tooltip =>
+            "Makes the agent's transform turns to look at the given point. The orientation of the agent " +
+            "is determined by baseDirection. No lerp. Immediately succeeds.";
         public bool useLocalBase;
         public DataSource<Vector3> baseDirection;
         public DataSource<Vector3> targetPoint;

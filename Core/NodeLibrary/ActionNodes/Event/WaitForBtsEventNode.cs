@@ -7,10 +7,13 @@ namespace MochiBTS.Core.NodeLibrary.ActionNodes.Event
     public class WaitForBtsEventNode: ActionNode, IListener
     {
 
+        public override string tooltip =>
+            "Keeps running until the assigned BtsEvent is invoked. Returns outputState afterwards.";
         public State outputState;
         public BtsEvent btsEvent;
         protected override void OnStart(Agent agent, Blackboard blackboard)
         {
+            state = State.Running;
             btsEvent += this;
         }
         protected override void OnStop(Agent agent, Blackboard blackboard)

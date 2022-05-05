@@ -4,6 +4,9 @@ namespace MochiBTS.Core.NodeLibrary.DecoratorNodes.General
 {
     public class FilterNode: DecoratorNode
     {
+        public override string tooltip =>
+            "Always executes its child. Returns Running unless the child returns a state equal to passingState." +
+            "Returns passingState if it is the case.";
         public Node.State passingState;
         public bool notEqualTo = false;
         protected override void OnStart(Agent agent, Blackboard blackboard)

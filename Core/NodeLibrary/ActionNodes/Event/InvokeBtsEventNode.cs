@@ -5,6 +5,8 @@ namespace MochiBTS.Core.NodeLibrary.ActionNodes.Event
 {
     public class InvokeBtsEventNode:ActionNode
     {
+        public override string tooltip =>
+        "Invokes a built-in BtsEvent. Immediately succeeds.";
         public BtsEvent btsEvent;
 
         protected override void OnStart(Agent agent, Blackboard blackboard)

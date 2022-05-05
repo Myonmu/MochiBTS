@@ -6,6 +6,8 @@ namespace MochiBTS.Core.NodeLibrary.ActionNodes.General
     public class VariableDebugNode : ActionNode
     {
 
+        public override string tooltip =>
+            "Prints the value of a variable in the debug console. Immediately succeeds.";
         public DataSource<object> variable;
         protected override void OnStart(Agent agent, Blackboard blackboard)
         {

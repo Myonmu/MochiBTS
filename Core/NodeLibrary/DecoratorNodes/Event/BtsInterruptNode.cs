@@ -7,11 +7,14 @@ namespace MochiBTS.Core.NodeLibrary.DecoratorNodes.Event
 {
     public class BtsInterruptNode: DecoratorNode, IListener
     {
+        public override string tooltip =>
+            "Calls Interrupt on the closest interruptable action node upon event triggering. ";
         public BtsEvent btsEvent;
         private Node targetNode;
         protected override void OnStart(Agent agent, Blackboard blackboard)
         {
             btsEvent.Subscribe(this);
+            if (targetNode is not null) return;
             targetNode = child;
             while (targetNode is DecoratorNode decoratorNode ) {
                 targetNode = decoratorNode.child;
