@@ -13,7 +13,7 @@ namespace MochiBTS.Core.Primitives
         // public BehaviorTree runtimeInstance => instance ? instance : (instance = this.Clone());
         public Node rootNode;
         public Node.State treeState = Node.State.Running;
-        public List<Node> nodes = new();
+        [HideInInspector]public List<Node> nodes = new();
         public Blackboard blackboard;
         //View Transform
         [HideInInspector] public Vector3 transformScale;

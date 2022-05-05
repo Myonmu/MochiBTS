@@ -13,10 +13,12 @@ namespace MochiBTS.Core.NodeLibrary.ActionNodes.Event
 
         protected override void OnStart(Agent agent, Blackboard blackboard)
         {
-            foreach (var evt in blackboard.btsEventEntries.Where(evt => evt.eventName == soEventName)) {
-                if (evt.soEvent is IInvokable invokable)
-                    soEvent = invokable;
-                break;
+            if (soEvent is null) {
+                foreach (var evt in blackboard.btsEventEntries.Where(evt => evt.eventName == soEventName)) {
+                    if (evt.soEvent is IInvokable invokable)
+                        soEvent = invokable;
+                    break;
+                }
             }
         }
         protected override void OnStop(Agent agent, Blackboard blackboard)

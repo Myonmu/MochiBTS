@@ -18,10 +18,12 @@ namespace MochiBTS.Core.NodeLibrary.ActionNodes.Event
         }
         protected override void OnStart(Agent agent, Blackboard blackboard)
         {
-            foreach (var evt in blackboard.btsEventEntries.Where(evt => evt.eventName == soEventName)) {
-                if (evt.soEvent is ISubscribable subscribable)
-                    soEvent = subscribable;
-                break;
+            if (soEvent is null) {
+                foreach (var evt in blackboard.btsEventEntries.Where(evt => evt.eventName == soEventName)) {
+                    if (evt.soEvent is ISubscribable subscribable)
+                        soEvent = subscribable;
+                    break;
+                }
             }
             state = State.Running;
             soEvent?.Subscribe(this);
