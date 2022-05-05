@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-namespace MochiBTS.Core.Primitives.Utilities
+namespace MochiBTS.Core.Primitives.Utilities.DataProcessors
 {
     public class BaseDataProcessor: ScriptableObject
     {

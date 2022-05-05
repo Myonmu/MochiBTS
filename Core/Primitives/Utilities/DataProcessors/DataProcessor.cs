@@ -1,4 +1,4 @@
-﻿namespace MochiBTS.Core.Primitives.Utilities
+﻿namespace MochiBTS.Core.Primitives.Utilities.DataProcessors
 {
     public abstract class DataProcessor<T> : BaseDataProcessor
     {
