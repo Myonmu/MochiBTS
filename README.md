@@ -37,3 +37,19 @@ To be able to run a tree, you will need a Tree Runner component. Assign a Tree a
 ## Word about performance
 
 Variable boards and Blackboards are handy, but the ease of use is "balanced" by its performance. If you use any of these data containers, during the execution of a BT there will be lots of reflection, boxing and unboxing, which can hurt performance if you use it on performance critical systems. (For example, do not use a BT to animate a bullet). Generally speaking, Variable board is the slowest, and then it is accessing fields using reflection (blackboard or agent), after that you have interface implementations, and finally direct access (class.field). If you want to use the BT in performance heavy part, you will have to implement custom nodes that uses direct access.
+
+## DataProcessors (DP)
+
+DP are used by data processor nodes. They are scriptable objects that only contain a method: ``object Process(object o)``. They can be used to do specific calculations without the need to create a dedicated node. There are two different base classes that your custom DP can derive from: BaseDataProcessor and DataProcessor<T>. The difference is that the latter enforces typing. 
+  
+ For instance, if you want to have a DP that add 1 to an integer when invoked:
+  ```csharp
+  [CreateAssetMenu]
+  public class IntegerIncrement : DataProcessor<int>
+  {
+       protected override int OnProcess(int o){
+             return o+1;
+       }
+  }
+ ```
+  There are also BaseMultiDataProcessor and MultiDataProcessor<T> that takes 2 objects and returns an object. Note that if you derive from BaseMultiDataProcessor, the input values can be different since they are boxed in an objet, whereas MultiDataProcessor<T> requires both objects to be of type T and returns T.
