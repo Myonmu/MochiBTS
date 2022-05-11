@@ -9,10 +9,12 @@ namespace MochiBTS.Core.Primitives.DataContainers
     public struct EventEntry
     {
         public string eventName;
+        public bool cloned;
         public ScriptableObject soEvent;
         public EventEntry(string name, ScriptableObject evt)
         {
             eventName = name;
+            cloned = true;
             soEvent = evt;
         }
         public EventEntry Clone()
@@ -29,7 +31,8 @@ namespace MochiBTS.Core.Primitives.DataContainers
         public Blackboard Clone()
         {
             var instance = Instantiate(this);
-            var eventInstances = btsEventEntries.Select(evt => evt.Clone()).ToList();
+            var eventInstances =
+                btsEventEntries.Select(evt => evt.cloned?evt.Clone():evt).ToList();
             instance.btsEventEntries = eventInstances;
             return instance;
         }

@@ -12,6 +12,8 @@ namespace MochiBTS.Core.Primitives.Variables
             Integer,
             Float,
             Vector3,
+            Vector2,
+            GameObject,
             Transform
         }
         public VariableType type;
@@ -23,6 +25,8 @@ namespace MochiBTS.Core.Primitives.Variables
         public FloatVariable FloatVariable = new();
         public Vector3Variable Vector3Variable = new();
         public TransformVariable TransformVariable = new();
+        public Vector2Variable Vector2Variable = new();
+        public GameObjectVariable GameObjectVariable = new();
 
 
         // ======3====== Add a new case to return the field.
@@ -34,6 +38,8 @@ namespace MochiBTS.Core.Primitives.Variables
                 case VariableType.Float: return FloatVariable;
                 case VariableType.Vector3: return Vector3Variable;
                 case VariableType.Transform: return TransformVariable;
+                case VariableType.Vector2: return Vector2Variable;
+                case VariableType.GameObject: return GameObjectVariable;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(variableType), variableType, null);
             }

@@ -1,4 +1,6 @@
-﻿namespace MochiBTS.Core.Primitives.DataProcessors
+﻿using System;
+using MochiBTS.Core.NodeLibrary.ActionNodes.Event;
+namespace MochiBTS.Core.Primitives.DataProcessors
 {
     public abstract class MultiDataProcessor<T> : BaseMultiDataProcessor
     {
@@ -11,4 +13,5 @@
 
         protected abstract T OnProcess(T u, T v);
     }
+    
 }
