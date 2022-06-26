@@ -3,13 +3,15 @@ using UnityEngine;
 namespace MochiBTS.Core.Primitives.Events
 {
     [CreateAssetMenu(fileName = "BTSEvent", menuName = "BTS/BTS Event")]
-    public class BtsEvent : ScriptableObject, IInvokable, ISubscribable
+    public class BtsEvent : ScriptableObject, IListener, ISubscribable
     {
         [TextArea] [SerializeField] private string eventDescription;
+        public bool isActive = true;
         private readonly List<IListener> subscribers = new();
 
-        public void Invoke()
+        public void OnEventReceive()
         {
+            if (!isActive) return;
             foreach (var t in subscribers)
                 t.OnEventReceive();
         }

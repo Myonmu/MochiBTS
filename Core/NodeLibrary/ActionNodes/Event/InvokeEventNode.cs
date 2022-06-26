@@ -7,7 +7,7 @@ namespace MochiBTS.Core.NodeLibrary.ActionNodes.Event
     public class InvokeEventNode : ActionNode
     {
         public string soEventName;
-        private IInvokable soEvent;
+        private IListener soEvent;
         public override string tooltip =>
             "Invokes a Scriptable Object event. The SO must implement IInvokable. Succeeds if invokable.";
 
@@ -15,8 +15,8 @@ namespace MochiBTS.Core.NodeLibrary.ActionNodes.Event
         {
             if (soEvent is null) {
                 foreach (var evt in blackboard.btsEventEntries.Where(evt => evt.eventName == soEventName)) {
-                    if (evt.soEvent is IInvokable invokable)
-                        soEvent = invokable;
+                    if (evt.soEvent is IListener listener)
+                        soEvent = listener;
                     break;
                 }
             }
@@ -27,7 +27,7 @@ namespace MochiBTS.Core.NodeLibrary.ActionNodes.Event
         }
         protected override State OnUpdate(Agent agent, Blackboard blackboard)
         {
-            soEvent?.Invoke();
+            soEvent?.OnEventReceive();
             return State.Success;
         }
     }
