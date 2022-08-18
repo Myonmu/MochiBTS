@@ -1,5 +1,7 @@
 # This Project is a WIP. It is still far from complete
 
+**Current Focus: Changing the variable system to reduce allocation for each variable, and add binding (referencing another variable). (currently functional, now adding editor juice) **
+
 A generic BTS for Unity, using graph view and SO. There is a search window that should automatically add custom nodes in the correct hierachy.
 
 ![image](https://user-images.githubusercontent.com/62897460/166552187-deaf7304-e2b7-496d-ba8a-ab03dd15ea4a.png)
