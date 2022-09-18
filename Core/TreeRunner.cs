@@ -1,4 +1,5 @@
-﻿using MochiBTS.Core.Primitives;
+﻿using System;
+using MochiBTS.Core.Primitives;
 using MochiBTS.Core.Primitives.DataContainers;
 using MochiBTS.Core.Primitives.Events;
 using UnityEngine;
@@ -16,11 +17,12 @@ namespace MochiBTS.Core
         //public bool useOriginal = false;
         public Agent agent;
         public ExecutionMode executionMode = ExecutionMode.Update;
-        [HideInInspector] public ScriptableObject trigger;
+        [HideInInspector] public ScriptableObject trigger; //Only showed on demand
         private void Start()
         {
             tree = tree.Clone();
             agent ??= GetComponent<Agent>();
+            
         }
 
         private void OnEnable()
