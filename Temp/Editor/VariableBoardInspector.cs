@@ -59,12 +59,15 @@ namespace DefaultNamespace.Editor
                         var compOrig = ((Component)bindingSource.FindPropertyRelative("selectedComponent").boxedValue);
                         var comp = compOrig is null ? "null" : compOrig.GetType().Name;
                         var prop = bindingSource.FindPropertyRelative("selectedProperty").stringValue;
-                        valString = $"{obj}.{comp}.{prop} => {CompactBindingSourceDrawer.FetchValue(bindingSource)}";
-                        boundValueIsNull = string.IsNullOrEmpty(prop);
+                        var sub = bindingSource.FindPropertyRelative("selectedSub").stringValue;
+                        valString =
+                            $"{obj}.{comp}.{prop + (string.IsNullOrEmpty(sub) ? "" : $".{sub}")} => {CompactBindingSourceDrawer.FetchValue(bindingSource)}";
+                        boundValueIsNull = string.IsNullOrEmpty(prop) ||
+                                           (string.IsNullOrEmpty(prop) && string.IsNullOrEmpty(sub));
                     }
 
                     var voidName = string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key);
-                    if (namingConflict||voidName)
+                    if (namingConflict || voidName)
                     {
                         GUI.contentColor = Color.red;
                     }

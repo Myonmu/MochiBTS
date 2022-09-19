@@ -13,7 +13,7 @@ namespace DefaultNamespace.TestGround
     }
     public class TestDrawer : MonoBehaviour
     {
-        public List<MochiVariable<Vector3>> composites;
+        public List<MochiVariable<float>> composites;
 
         private void Start()
         {
