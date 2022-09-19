@@ -9,7 +9,7 @@ namespace DefaultNamespace.MochiVariable
     /// </summary>
     public static class ReflectionUtils
     {
-        public static Func<T> CreateGetter<T>(Component selectedComponent, FieldInfo field)
+        public static Func<T> CreateGetter<T>(object selectedComponent, FieldInfo field)
         {
             try {
                 var expr = Expression.Field(field.IsStatic ? null : Expression.Constant(selectedComponent), field);
@@ -18,7 +18,7 @@ namespace DefaultNamespace.MochiVariable
                 return null;
             }
         }
-        public static Action<T> CreateSetter<T>(Component selectedComponent, FieldInfo field)
+        public static Action<T> CreateSetter<T>(object selectedComponent, FieldInfo field)
         {
 
             try {
@@ -30,7 +30,7 @@ namespace DefaultNamespace.MochiVariable
                 return null;
             }
         }
-        public static Func<T> CreateNestedGetter<T>(Component selectedComponent, PropertyInfo property, PropertyInfo second)
+        public static Func<T> CreateNestedGetter<T>(object selectedComponent, PropertyInfo property, PropertyInfo second)
         {
             try {
                 var expr = Expression.Property(Expression.Constant(selectedComponent), property);
@@ -40,7 +40,7 @@ namespace DefaultNamespace.MochiVariable
                 return null;
             }
         }
-        public static Action<T> CreateNestedSetter<T>(Component selectedComponent, PropertyInfo property, PropertyInfo second)
+        public static Action<T> CreateNestedSetter<T>(object selectedComponent, PropertyInfo property, PropertyInfo second)
         {
             try {
                 var param = Expression.Parameter(typeof(T));
@@ -52,7 +52,7 @@ namespace DefaultNamespace.MochiVariable
                 return null;
             }
         }
-        public static Func<T> CreateNestedGetter<T>(Component selectedComponent, FieldInfo field, PropertyInfo second)
+        public static Func<T> CreateNestedGetter<T>(object selectedComponent, FieldInfo field, PropertyInfo second)
         {
             try {
                 var expr = Expression.Field(field.IsStatic?null:Expression.Constant(selectedComponent), field);
@@ -62,7 +62,7 @@ namespace DefaultNamespace.MochiVariable
                 return null;
             }
         }
-        public static Action<T> CreateNestedSetter<T>(Component selectedComponent, FieldInfo field, PropertyInfo second)
+        public static Action<T> CreateNestedSetter<T>(object selectedComponent, FieldInfo field, PropertyInfo second)
         {
             try {
                 var param = Expression.Parameter(typeof(T));

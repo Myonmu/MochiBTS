@@ -9,11 +9,11 @@ namespace DefaultNamespace.TestGround
     {
         public string key;
         public Vector3 val;
-        public BindingSource<Vector3> bindingSource;
+        public GoBindingSource<Vector3> bindingSource;
     }
     public class TestDrawer : MonoBehaviour
     {
-        public List<MochiVariable<float>> composites;
+        public List<MochiVariable<int>> composites;
 
         private void Start()
         {

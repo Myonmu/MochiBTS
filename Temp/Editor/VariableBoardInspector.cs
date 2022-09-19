@@ -50,20 +50,9 @@ namespace DefaultNamespace.Editor
                     var useBinding = element.FindPropertyRelative("bindVariable").boolValue;
                     var valString = $"{val.boxedValue}";
                     var boundValueIsNull = false;
-                    if (useBinding)
-                    {
-                        var bindingSource = element.FindPropertyRelative("bindingSource");
-                        CompactBindingSourceDrawer.InitWhenHidden(bindingSource);
-                        var objOrig = ((GameObject)bindingSource.FindPropertyRelative("obj").boxedValue);
-                        var obj = objOrig is null ? "null" : objOrig.name;
-                        var compOrig = ((Component)bindingSource.FindPropertyRelative("selectedComponent").boxedValue);
-                        var comp = compOrig is null ? "null" : compOrig.GetType().Name;
-                        var prop = bindingSource.FindPropertyRelative("selectedProperty").stringValue;
-                        var sub = bindingSource.FindPropertyRelative("selectedSub").stringValue;
-                        valString =
-                            $"{obj}.{comp}.{prop + (string.IsNullOrEmpty(sub) ? "" : $".{sub}")} => {CompactBindingSourceDrawer.FetchValue(bindingSource)}";
-                        boundValueIsNull = string.IsNullOrEmpty(prop) ||
-                                           (string.IsNullOrEmpty(prop) && string.IsNullOrEmpty(sub));
+                    if (useBinding) {
+
+                        valString = ValStringFromSo(element, out boundValueIsNull);
                     }
 
                     var voidName = string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key);
@@ -112,7 +101,7 @@ namespace DefaultNamespace.Editor
             list.onChangedCallback += (l) =>
             {
                 //Debug.Log("ChangeDetected");
-                CompactBindingSourceDrawer.InvalidateCache(list.serializedProperty);
+                SoBindingSourceDrawer.InvalidateCache(list.serializedProperty);
                 varNames.Clear();
                 namingConflictStats.Clear();
                 needRevalidateNames = true;
@@ -126,12 +115,42 @@ namespace DefaultNamespace.Editor
                     var element = list.serializedProperty.GetArrayElementAtIndex(index);
                     if (!element.FindPropertyRelative("bindVariable").boolValue) continue;
                     var bindingSource = element.FindPropertyRelative("bindingSource");
-                    CompactBindingSourceDrawer.ReEvaluateBinding(bindingSource);
+                    SoBindingSourceDrawer.ReEvaluateBinding(bindingSource);
                     varNames.Clear();
                     namingConflictStats.Clear();
                     needRevalidateNames = true;
                 }
             };
+        }
+        private static string ValStringFromGo(SerializedProperty element, out bool boundValueIsNull)
+        {
+
+            var bindingSource = element.FindPropertyRelative("bindingSource");
+            GoBindingSourceDrawer.InitWhenHidden(bindingSource);
+            var objOrig = (GameObject)bindingSource.FindPropertyRelative("obj").boxedValue;
+            var obj = objOrig is null ? "null" : objOrig.name;
+            var compOrig = ((Component)bindingSource.FindPropertyRelative("selectedComponent").boxedValue);
+            var comp = compOrig is null ? "null" : compOrig.GetType().Name;
+            var prop = bindingSource.FindPropertyRelative("selectedProperty").stringValue;
+            var sub = bindingSource.FindPropertyRelative("selectedSub").stringValue;
+            var valString = $"{obj}.{comp}.{prop + (string.IsNullOrEmpty(sub) ? "" : $".{sub}")} => {GoBindingSourceDrawer.FetchValue(bindingSource)}";
+            boundValueIsNull = string.IsNullOrEmpty(prop) ||
+                               (string.IsNullOrEmpty(prop) && string.IsNullOrEmpty(sub));
+            return valString;
+        }
+
+        private static string ValStringFromSo(SerializedProperty element, out bool boundValueIsNull)
+        {
+            var bindingSource = element.FindPropertyRelative("bindingSource");
+            SoBindingSourceDrawer.InitWhenHidden(bindingSource);
+            var objOrig = (ScriptableObject)bindingSource.FindPropertyRelative("obj").boxedValue;
+            var obj = objOrig is null ? "null" : objOrig.name;
+            var prop = bindingSource.FindPropertyRelative("selectedProperty").stringValue;
+            var sub = bindingSource.FindPropertyRelative("selectedSub").stringValue;
+            var valString = $"{obj}.{prop + (string.IsNullOrEmpty(sub) ? "" : $".{sub}")} => {SoBindingSourceDrawer.FetchValue(bindingSource)}";
+            boundValueIsNull = string.IsNullOrEmpty(prop) ||
+                               (string.IsNullOrEmpty(prop) && string.IsNullOrEmpty(sub));
+            return valString;
         }
 
         public override void OnInspectorGUI()

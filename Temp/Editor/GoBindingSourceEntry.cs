@@ -11,7 +11,7 @@ namespace DefaultNamespace.Editor
           * to avoid using reflections for initialization. (trade memory for performance)
           */
     [Serializable]
-    public class CompactBindingSourceEntry
+    public class GoBindingSourceEntry
     {
         public int id;
         public object propertyObject;

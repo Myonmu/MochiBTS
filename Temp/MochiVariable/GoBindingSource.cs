@@ -4,8 +4,9 @@ using UnityEngine;
 namespace DefaultNamespace.MochiVariable
 {
     [Serializable]
-    public class CompactBindingSource<T> : IBindingSource
+    public class GoBindingSource<T> : BindingSource
     {
+        
         public GameObject obj;
         public Component selectedComponent;
         public string selectedProperty;
@@ -13,6 +14,7 @@ namespace DefaultNamespace.MochiVariable
 
         public Func<T> getValue;
         public Action<T> setValue;
+        
 
         public object BoxedValue()
         {

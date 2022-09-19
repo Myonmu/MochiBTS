@@ -10,7 +10,7 @@ namespace DefaultNamespace.MochiVariable
         public string key;
         [SerializeField] private bool bindVariable = false;
         [SerializeField] private T val;
-        [SerializeField] private CompactBindingSource<T> bindingSource;
+        [SerializeField] private SoBindingSource<T> bindingSource;
 
         public void InitializeBinding()
         {

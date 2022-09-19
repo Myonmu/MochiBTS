@@ -6,33 +6,29 @@ using System.Text.RegularExpressions;
 using DefaultNamespace.MochiVariable;
 using UnityEditor;
 using UnityEngine;
-
 namespace DefaultNamespace.Editor
 {
-    [CustomPropertyDrawer(typeof(CompactBindingSource<>))]
-    public class CompactBindingSourceDrawer : PropertyDrawer
+    [CustomPropertyDrawer(typeof(SoBindingSource<>))]
+    public class SoBindingSourceDrawer : PropertyDrawer
     {
         private static readonly Regex MatchArrayElement = new(@"data\[(\d+)\]$");
 
         //private static readonly Dictionary<string, BindingSourceEntry> Entries = new();
-        private static readonly Dictionary<int, Dictionary<string, CompactBindingSourceEntry>> Entries = new();
+        private static readonly Dictionary<int, Dictionary<string, SoBindingSourceEntry>> Entries = new();
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             var entry = Initialize(property);
             var maxWidth = position.width;
             EditorGUI.BeginProperty(position, label, property);
-            position.width = 0.25f * maxWidth;
+            position.width = 0.4f * maxWidth;
             EditorGUI.BeginChangeCheck();
             property.serializedObject.Update();
             EditorGUI.PropertyField(position, property.FindPropertyRelative("obj"), GUIContent.none);
             property.serializedObject.ApplyModifiedProperties();
-            if (EditorGUI.EndChangeCheck())
-            {
+            if (EditorGUI.EndChangeCheck()) {
                 //Debug.Log($"{property.propertyPath},idx{index},init{initialized}");
-
                 property.serializedObject.Update();
-                entry.Refresh(property);
                 entry.Reflect(property);
                 entry.UpdateSelected(property);
                 entry.SubReflect(property);
@@ -42,46 +38,18 @@ namespace DefaultNamespace.Editor
                 property.serializedObject.Update();
             }
 
-            //position.width = maxWidth * 0.25f;
-            position.x += 0.25f * maxWidth;
-
-            if (entry.componentNames is not null)
-            {
-                //Debug.Log("Evaluating popup");
-                EditorGUI.BeginChangeCheck();
-                property.serializedObject.Update();
-                entry.selectedComponentIndex = EditorGUI.Popup(position, entry.selectedComponentIndex,
-                    entry.componentNames.ToArray());
-                property.serializedObject.ApplyModifiedProperties();
-                if (EditorGUI.EndChangeCheck())
-                {
-                    property.serializedObject.Update();
-                    entry.Reflect(property);
-                    entry.UpdateSelected(property);
-                    entry.SubReflect(property);
-                    entry.UpdateSelected(property);
-                    entry.bind?.Invoke();
-                    property.serializedObject.ApplyModifiedProperties();
-                    property.serializedObject.Update();
-                }
-            }
-
-            position.x += 0.25f * maxWidth;
-            if (entry.properties is not null)
-            {
-                if (entry.properties.Count < 1)
-                {
+            position.width = 0.3f * maxWidth;
+            position.x += 0.4f * maxWidth;
+            if (entry.properties is not null) {
+                if (entry.properties.Count < 1) {
                     EditorGUI.HelpBox(position, "Unavailable", MessageType.Warning);
-                }
-                else
-                {
+                } else {
                     EditorGUI.BeginChangeCheck();
                     property.serializedObject.Update();
                     entry.selectedPropertyIndex = EditorGUI.Popup(position, entry.selectedPropertyIndex,
                         entry.properties.ToArray());
                     property.serializedObject.ApplyModifiedProperties();
-                    if (EditorGUI.EndChangeCheck())
-                    {
+                    if (EditorGUI.EndChangeCheck()) {
                         property.serializedObject.Update();
                         entry.UpdateSelected(property);
                         entry.SubReflect(property);
@@ -93,22 +61,17 @@ namespace DefaultNamespace.Editor
                 }
             }
 
-            position.x += 0.25f * maxWidth;
-            if (entry.subProperties is not null)
-            {
-                if (entry.subProperties.Count < 1)
-                {
+            position.x += 0.3f * maxWidth;
+            if (entry.subProperties is not null) {
+                if (entry.subProperties.Count < 1) {
                     EditorGUI.HelpBox(position, "Unavailable", MessageType.Warning);
-                }
-                else
-                {
+                } else {
                     EditorGUI.BeginChangeCheck();
                     property.serializedObject.Update();
                     entry.selectedSubIndex =
                         EditorGUI.Popup(position, entry.selectedSubIndex, entry.subProperties.ToArray());
                     property.serializedObject.ApplyModifiedProperties();
-                    if (EditorGUI.EndChangeCheck())
-                    {
+                    if (EditorGUI.EndChangeCheck()) {
                         property.serializedObject.Update();
                         entry.UpdateSelected(property);
                         entry.bind?.Invoke();
@@ -131,16 +94,16 @@ namespace DefaultNamespace.Editor
         {
             var path = prop.propertyPath;
             var id = prop.serializedObject.targetObject.GetInstanceID();
-            if (Entries.ContainsKey(id) && Entries[id].ContainsKey(path))
-            {
+            if (Entries.ContainsKey(id) && Entries[id].ContainsKey(path)) {
                 var target = Entries[id][path];
                 target.ReEvaluate(prop);
             }
         }
 
 
-        protected static CompactBindingSourceEntry Initialize(SerializedProperty prop)
+        protected static SoBindingSourceEntry Initialize(SerializedProperty prop)
         {
+            if (prop is null) return null;
             var serializedObject = prop.serializedObject;
             var path = prop.propertyPath;
             var id = prop.serializedObject.targetObject.GetInstanceID();
@@ -156,32 +119,28 @@ namespace DefaultNamespace.Editor
             }
             */
 
-            if (Entries.ContainsKey(id) && Entries[id].ContainsKey(path))
-            {
+            if (Entries.ContainsKey(id) && Entries[id].ContainsKey(path)) {
                 var target = Entries[id][path];
                 return target;
             }
 
-            CompactBindingSourceEntry entry = new();
+            SoBindingSourceEntry entry = new();
             //if (initialized) return;
             //Debug.Log($"Initialize {id+path}");
             entry.propertyObject = serializedObject == null || serializedObject.targetObject == null
                 ? null
                 : serializedObject.targetObject;
             entry.objectType = entry.propertyObject?.GetType();
-            if (!string.IsNullOrEmpty(path) && entry.propertyObject != null)
-            {
+            if (!string.IsNullOrEmpty(path) && entry.propertyObject != null) {
                 var splitPath = path.Split('.');
                 Type fieldType = null;
 
                 //work through the given property path, node by node
-                for (var i = 0; i < splitPath.Length; i++)
-                {
+                for (var i = 0; i < splitPath.Length; i++) {
                     var pathNode = splitPath[i];
 
                     //both arrays and lists implement the IList interface
-                    if (fieldType != null && typeof(IList).IsAssignableFrom(fieldType))
-                    {
+                    if (fieldType != null && typeof(IList).IsAssignableFrom(fieldType)) {
                         //IList items are serialized like this: `Array.data[0]`
                         Debug.AssertFormat(pathNode.Equals("Array", StringComparison.Ordinal),
                             serializedObject.targetObject, "Expected path node 'Array', but found '{0}'", pathNode);
@@ -191,32 +150,26 @@ namespace DefaultNamespace.Editor
 
                         //match the `data[0]` part of the path and extract the IList item index
                         var elementMatch = MatchArrayElement.Match(pathNode);
-                        if (elementMatch.Success && int.TryParse(elementMatch.Groups[1].Value, out entry.id))
-                        {
+                        if (elementMatch.Success && int.TryParse(elementMatch.Groups[1].Value, out entry.id)) {
                             var objectArray = (IList)entry.propertyObject;
                             var validArrayEntry = objectArray != null && entry.id < objectArray.Count;
                             entry.propertyObject = validArrayEntry ? objectArray[entry.id] : null;
                             entry.objectType = fieldType.IsArray
                                 ? fieldType.GetElementType() //only set for arrays
                                 : fieldType.GenericTypeArguments[0]; //type of `T` in List<T>
-                        }
-                        else
-                        {
+                        } else {
                             Debug.LogErrorFormat(serializedObject.targetObject,
                                 "Unexpected path format for array item: '{0}'", pathNode);
                         }
 
                         //reset fieldType, so we don't end up in the IList branch again next iteration
                         fieldType = null;
-                    }
-                    else
-                    {
+                    } else {
                         FieldInfo field;
                         var instanceType = entry.objectType;
                         var fieldBindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic |
                                                 BindingFlags.FlattenHierarchy;
-                        do
-                        {
+                        do {
                             field = instanceType.GetField(pathNode, fieldBindingFlags);
 
                             //b/c a private, serialized field of a subclass isn't directly retrievable,
@@ -235,8 +188,7 @@ namespace DefaultNamespace.Editor
                 }
             }
 
-            if (entry.propertyObject != null)
-            {
+            if (entry.propertyObject != null) {
                 entry.bind = (Action)entry.propertyObject.GetType().GetMethod("Bind")
                     ?.CreateDelegate(typeof(Action), entry.propertyObject);
                 entry.resetDelegates = (Action)entry.propertyObject.GetType().GetMethod("ResetDelegate")
@@ -248,21 +200,19 @@ namespace DefaultNamespace.Editor
             }
 
             //initialized = true;
-            if (!Entries.ContainsKey(id))
-            {
-                Entries.Add(id, new Dictionary<string, CompactBindingSourceEntry>());
+            if (!Entries.ContainsKey(id)) {
+                Entries.Add(id, new Dictionary<string, SoBindingSourceEntry>());
             }
 
             Entries[id].Add(path, entry);
             entry.resetDelegates?.Invoke();
             if (entry.ReEvaluate(prop)) return entry;
-            entry.Refresh(prop);
             entry.Reflect(prop);
             entry.bind?.Invoke();
             return entry;
         }
 
-        public static CompactBindingSourceEntry GetEntry(SerializedProperty prop)
+        public static SoBindingSourceEntry GetEntry(SerializedProperty prop)
         {
             var path = prop.propertyPath;
             var id = prop.serializedObject.targetObject.GetInstanceID();
