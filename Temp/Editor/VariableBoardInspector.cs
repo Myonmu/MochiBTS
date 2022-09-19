@@ -4,6 +4,7 @@ using DefaultNamespace.TestGround;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
+
 namespace DefaultNamespace.Editor
 {
     [CustomEditor(typeof(TestDrawer))]
@@ -13,65 +14,90 @@ namespace DefaultNamespace.Editor
         private bool needRevalidateNames = true;
         private Dictionary<int, bool> namingConflictStats = new();
         private ReorderableList list;
+
         private void OnEnable()
         {
             needRevalidateNames = true;
             var prop = serializedObject.FindProperty("composites");
             list = new ReorderableList(serializedObject, prop,
-                true, true, true, true) {
+                true, true, true, true)
+            {
                 //list.elementHeight = EditorGUIUtility.singleLineHeight * 2.5f;
                 drawHeaderCallback = rect => EditorGUI.LabelField(rect, "Variables")
             };
 
             list.drawElementCallback =
-                (rect, index, isActive, isFocused) => {
+                (rect, index, isActive, isFocused) =>
+                {
                     var element = list.serializedProperty.GetArrayElementAtIndex(index);
                     var namingConflict = !needRevalidateNames && namingConflictStats[index];
                     rect.x += 10f;
                     rect.width -= 10f;
                     rect.height = EditorGUIUtility.singleLineHeight;
-                    if (needRevalidateNames) {
-                        var s = element.FindPropertyRelative("key").stringValue;
-                        if (varNames.Any(n => n == s)) {
+                    var key = element.FindPropertyRelative("key").stringValue;
+                    if (needRevalidateNames)
+                    {
+                        if (varNames.Any(n => n == key))
+                        {
                             namingConflict = true;
                         }
-                        if(!namingConflict)varNames.Add(s);
-                        namingConflictStats.Add(index,namingConflict);
+
+                        if (!namingConflict) varNames.Add(key);
+                        namingConflictStats.Add(index, namingConflict);
                     }
+
                     var val = element.FindPropertyRelative("val");
                     var useBinding = element.FindPropertyRelative("bindVariable").boolValue;
-                    var bindingSource = element.FindPropertyRelative("bindingSource");
-                    CompactBindingSourceDrawer.InitWhenHidden(bindingSource);
-                    var objOrig = ((GameObject)bindingSource.FindPropertyRelative("obj").boxedValue);
-                    var obj = objOrig is null ? "null" : objOrig.name;
-                    var compOrig = ((Component)bindingSource.FindPropertyRelative("selectedComponent").boxedValue);
-                    var comp = compOrig is null ? "null" : compOrig.GetType().Name;
-                    var prop = bindingSource.FindPropertyRelative("selectedProperty").stringValue;
-                    
-                    var valString = useBinding ?$"{obj}.{comp}.{prop} => {CompactBindingSourceDrawer.FetchValue(bindingSource)}" :$"{val.boxedValue}";
-                    if (namingConflict) {
+                    var valString = $"{val.boxedValue}";
+                    var boundValueIsNull = false;
+                    if (useBinding)
+                    {
+                        var bindingSource = element.FindPropertyRelative("bindingSource");
+                        CompactBindingSourceDrawer.InitWhenHidden(bindingSource);
+                        var objOrig = ((GameObject)bindingSource.FindPropertyRelative("obj").boxedValue);
+                        var obj = objOrig is null ? "null" : objOrig.name;
+                        var compOrig = ((Component)bindingSource.FindPropertyRelative("selectedComponent").boxedValue);
+                        var comp = compOrig is null ? "null" : compOrig.GetType().Name;
+                        var prop = bindingSource.FindPropertyRelative("selectedProperty").stringValue;
+                        valString = $"{obj}.{comp}.{prop} => {CompactBindingSourceDrawer.FetchValue(bindingSource)}";
+                        boundValueIsNull = string.IsNullOrEmpty(prop);
+                    }
+
+                    var voidName = string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key);
+                    if (namingConflict||voidName)
+                    {
                         GUI.contentColor = Color.red;
                     }
-                    else if (useBinding) GUI.contentColor = string.IsNullOrEmpty(prop)?Color.red:Color.cyan;
+                    else if (useBinding) GUI.contentColor = boundValueIsNull ? Color.red : Color.cyan;
                     else GUI.contentColor = Color.yellow;
-                    element.isExpanded = EditorGUI.Foldout(rect, element.isExpanded, namingConflict?$"[{index}] !!! NAMING CONFLICT !!!":
-                        $"[{index}] {element.FindPropertyRelative("key").stringValue} = <{val.type}> {valString}", true);
-                    GUI.contentColor = Color.white;
-                    if (element.isExpanded) {
 
+                    element.isExpanded = EditorGUI.Foldout(rect, element.isExpanded,
+                        voidName
+                            ? $"[{index}] !!! EMPTY VARIABLE NAME !!!"
+                            : namingConflict
+                                ? $"[{index}] !!! NAMING CONFLICT !!!"
+                                : $"[{index}] {element.FindPropertyRelative("key").stringValue} = <{val.type}> {valString}",
+                        true);
+
+                    GUI.contentColor = Color.white;
+                    if (element.isExpanded)
+                    {
                         rect.x += 10f;
                         rect.y += EditorGUIUtility.singleLineHeight;
                         rect.width -= 10f;
                         rect.height -= EditorGUIUtility.singleLineHeight;
                         EditorGUI.PropertyField(rect, element, true);
                     }
-                    if (needRevalidateNames && index == (list.count - 1)) {
+
+                    if (needRevalidateNames && index == (list.count - 1))
+                    {
                         needRevalidateNames = false;
                     }
                 };
 
 
-            list.elementHeightCallback = (index) => {
+            list.elementHeightCallback = (index) =>
+            {
                 var element = list.serializedProperty.GetArrayElementAtIndex(index);
                 var h = EditorGUIUtility.singleLineHeight;
                 if (element.isExpanded)
@@ -80,7 +106,8 @@ namespace DefaultNamespace.Editor
             };
 
 
-            list.onChangedCallback += (l) => {
+            list.onChangedCallback += (l) =>
+            {
                 //Debug.Log("ChangeDetected");
                 CompactBindingSourceDrawer.InvalidateCache(list.serializedProperty);
                 varNames.Clear();
@@ -89,8 +116,10 @@ namespace DefaultNamespace.Editor
                 //Repaint();
             };
 
-            list.onSelectCallback += l => {
-                foreach (var index in l.selectedIndices) {
+            list.onSelectCallback += l =>
+            {
+                foreach (var index in l.selectedIndices)
+                {
                     var element = list.serializedProperty.GetArrayElementAtIndex(index);
                     if (!element.FindPropertyRelative("bindVariable").boolValue) continue;
                     var bindingSource = element.FindPropertyRelative("bindingSource");
@@ -99,17 +128,14 @@ namespace DefaultNamespace.Editor
                     namingConflictStats.Clear();
                     needRevalidateNames = true;
                 }
-                
             };
-            
-
         }
+
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
             list.DoLayoutList();
             serializedObject.ApplyModifiedProperties();
         }
-        
     }
 }
