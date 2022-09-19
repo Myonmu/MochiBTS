@@ -40,8 +40,7 @@ namespace DefaultNamespace.MochiVariable
 
         public void Bind()
         {
-            
-            if (selectedProperty is null) return;
+            if (selectedProperty is null||obj is null) return;
             var property = obj.GetType().GetProperty(selectedProperty);
             if (property != null)
             {

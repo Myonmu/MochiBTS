@@ -22,22 +22,23 @@ namespace DefaultNamespace.Editor
             property.serializedObject.ApplyModifiedProperties();
             //Mode
             position.x += maxWidth * 0.3f + 7f;
-            position.width = maxWidth * 0.02f;
+            position.width = maxWidth * 0.1f;
             var mode = property.FindPropertyRelative("bindVariable");
             property.serializedObject.Update();
             EditorGUI.PropertyField(position, mode, GUIContent.none);
             property.serializedObject.ApplyModifiedProperties();
             //Value field
-            position.x += maxWidth * 0.02f + 7f;
-            position.width = maxWidth * 0.68f - 21f;
-            GUI.enabled = !mode.boolValue;
+            position.x += maxWidth * 0.1f + 7f;
+            position.width = maxWidth * 0.6f - 21f;
+            var enumMode = mode.enumNames[mode.enumValueIndex];
+            GUI.enabled = enumMode == "Value";
             var val = property.FindPropertyRelative("val");
             property.serializedObject.Update();
 
             EditorGUI.PropertyField(position, val, GUIContent.none);
             property.serializedObject.ApplyModifiedProperties();
             //Binding Source
-            if (!mode.boolValue) {
+            if (enumMode == "Value") {
                 return;
             }
 
@@ -48,7 +49,15 @@ namespace DefaultNamespace.Editor
             position.y += EditorGUIUtility.singleLineHeight + 7f;
             position.x = initX;
             position.width = maxWidth;
-            EditorGUI.PropertyField(position, property.FindPropertyRelative("bindingSource"), GUIContent.none);
+            switch (enumMode) {
+                case "GO":
+                    EditorGUI.PropertyField(position, property.FindPropertyRelative("goBindingSource"), GUIContent.none);
+                    break;
+                case "SO":
+                    EditorGUI.PropertyField(position, property.FindPropertyRelative("soBindingSource"), GUIContent.none);
+                    break;
+            }
+
             GUI.enabled = true;
             EditorGUI.EndProperty();
 

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using DefaultNamespace.MochiVariable;
 using DefaultNamespace.TestGround;
 using UnityEditor;
 using UnityEditorInternal;
@@ -47,12 +48,16 @@ namespace DefaultNamespace.Editor
                     }
 
                     var val = element.FindPropertyRelative("val");
-                    var useBinding = element.FindPropertyRelative("bindVariable").boolValue;
+                    var useBinding = element.FindPropertyRelative("bindVariable");
+                    var mode = useBinding.enumNames[useBinding.enumValueIndex];
                     var valString = $"{val.boxedValue}";
                     var boundValueIsNull = false;
-                    if (useBinding) {
-
-                        valString = ValStringFromSo(element, out boundValueIsNull);
+                    if (mode!="Value") {
+                        valString = mode switch {
+                            "GO" => ValStringFromGo(element, out boundValueIsNull),
+                            "SO" => ValStringFromSo(element, out boundValueIsNull),
+                            _ => valString
+                        };
                     }
 
                     var voidName = string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key);
@@ -60,7 +65,7 @@ namespace DefaultNamespace.Editor
                     {
                         GUI.contentColor = Color.red;
                     }
-                    else if (useBinding) GUI.contentColor = boundValueIsNull ? Color.red : Color.cyan;
+                    else if (mode!="Value") GUI.contentColor = boundValueIsNull ? Color.red : Color.cyan;
                     else GUI.contentColor = Color.yellow;
 
                     element.isExpanded = EditorGUI.Foldout(rect, element.isExpanded,
@@ -102,6 +107,7 @@ namespace DefaultNamespace.Editor
             {
                 //Debug.Log("ChangeDetected");
                 SoBindingSourceDrawer.InvalidateCache(list.serializedProperty);
+                GoBindingSourceDrawer.InvalidateCache(list.serializedProperty);
                 varNames.Clear();
                 namingConflictStats.Clear();
                 needRevalidateNames = true;
@@ -116,6 +122,7 @@ namespace DefaultNamespace.Editor
                     if (!element.FindPropertyRelative("bindVariable").boolValue) continue;
                     var bindingSource = element.FindPropertyRelative("bindingSource");
                     SoBindingSourceDrawer.ReEvaluateBinding(bindingSource);
+                    GoBindingSourceDrawer.ReEvaluateBinding(bindingSource);
                     varNames.Clear();
                     namingConflictStats.Clear();
                     needRevalidateNames = true;
@@ -125,7 +132,7 @@ namespace DefaultNamespace.Editor
         private static string ValStringFromGo(SerializedProperty element, out bool boundValueIsNull)
         {
 
-            var bindingSource = element.FindPropertyRelative("bindingSource");
+            var bindingSource = element.FindPropertyRelative("goBindingSource");
             GoBindingSourceDrawer.InitWhenHidden(bindingSource);
             var objOrig = (GameObject)bindingSource.FindPropertyRelative("obj").boxedValue;
             var obj = objOrig is null ? "null" : objOrig.name;
@@ -141,7 +148,7 @@ namespace DefaultNamespace.Editor
 
         private static string ValStringFromSo(SerializedProperty element, out bool boundValueIsNull)
         {
-            var bindingSource = element.FindPropertyRelative("bindingSource");
+            var bindingSource = element.FindPropertyRelative("soBindingSource");
             SoBindingSourceDrawer.InitWhenHidden(bindingSource);
             var objOrig = (ScriptableObject)bindingSource.FindPropertyRelative("obj").boxedValue;
             var obj = objOrig is null ? "null" : objOrig.name;

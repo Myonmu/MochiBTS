@@ -4,16 +4,9 @@ using DefaultNamespace.MochiVariable;
 using UnityEngine;
 namespace DefaultNamespace.TestGround
 {
-    [Serializable]
-    public struct TestComposite
-    {
-        public string key;
-        public Vector3 val;
-        public GoBindingSource<Vector3> bindingSource;
-    }
     public class TestDrawer : MonoBehaviour
     {
-        public List<MochiVariable<int>> composites;
+        public List<MochiVariable<float>> composites;
 
         private void Start()
         {

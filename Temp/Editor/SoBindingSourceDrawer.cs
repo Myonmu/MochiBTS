@@ -92,6 +92,7 @@ namespace DefaultNamespace.Editor
 
         public static void ReEvaluateBinding(SerializedProperty prop)
         {
+            if (prop is null) return;
             var path = prop.propertyPath;
             var id = prop.serializedObject.targetObject.GetInstanceID();
             if (Entries.ContainsKey(id) && Entries[id].ContainsKey(path)) {
