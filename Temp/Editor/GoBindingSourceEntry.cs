@@ -155,17 +155,34 @@ namespace DefaultNamespace.Editor
         private void PopulateSecondProp(object selectedComponent, string selectedProp)
         {
             var propertyInfo = selectedComponent.GetType().GetProperty(selectedProp);
-            var subs = new PropertyInfo[] { };
-            if (propertyInfo is not null) subs = propertyInfo.PropertyType.GetProperties();
+            var subProps = new PropertyInfo[] { };
+            var subfields = new FieldInfo[] { };
+            if (propertyInfo != null)
+            {
+                subProps = propertyInfo.PropertyType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+                subfields = propertyInfo.PropertyType.GetFields(BindingFlags.Public | BindingFlags.Instance);
+            }
 
             var fieldInfo = selectedComponent.GetType().GetField(selectedProp);
-            if (fieldInfo is not null) subs = fieldInfo.FieldType.GetProperties();
+            if (fieldInfo != null)
+            {
+                subProps = fieldInfo.FieldType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+                subfields = fieldInfo.FieldType.GetFields(BindingFlags.Public | BindingFlags.Instance);
+            }
 
-            foreach (var sub in subs)
+            foreach (var sub in subProps)
             {
                 if (sub.PropertyType == getValueType.Invoke())
                 {
                     subProperties.Add(sub.Name);
+                }
+            }
+
+            foreach (var subfield in subfields)
+            {
+                if (subfield.FieldType == getValueType.Invoke())
+                {
+                    subProperties.Add(subfield.Name);
                 }
             }
         }
