@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using DefaultNamespace.MochiVariable;
 using DefaultNamespace.TestGround;
@@ -165,6 +166,17 @@ namespace DefaultNamespace.Editor
             serializedObject.Update();
             list.DoLayoutList();
             serializedObject.ApplyModifiedProperties();
+        }
+
+        public static List<Type> FetchAllVariableTypes()
+        {
+            var cache = TypeCache.GetTypesDerivedFrom<IMochiVariableBase>();
+            return cache.Where(t => !t.IsAbstract && !t.IsGenericTypeDefinition).ToList();
+        }
+
+        public static IMochiVariableBase Instantiate(Type varType)
+        {
+            return (IMochiVariableBase)Activator.CreateInstance(varType);
         }
     }
 }
