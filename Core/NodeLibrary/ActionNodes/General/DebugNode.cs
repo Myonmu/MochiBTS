@@ -7,7 +7,7 @@ namespace MochiBTS.Core.NodeLibrary.ActionNodes.General
     {
         public string message;
 
-        public override string tooltip =>
+        public override string Tooltip =>
             "Prints a message in the debug console. Immediately succeeds after print.";
         protected override void OnStart(Agent agent, Blackboard blackboard)
         {

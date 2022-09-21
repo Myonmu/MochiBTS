@@ -5,7 +5,7 @@ namespace MochiBTS.Core.NodeLibrary.DecoratorNodes.General
     public class ForceSuccessNode : DecoratorNode
     {
 
-        public override string tooltip =>
+        public override string Tooltip =>
             "Returns Success regardless of what the child returns";
         protected override void OnStart(Agent agent, Blackboard blackboard)
         {

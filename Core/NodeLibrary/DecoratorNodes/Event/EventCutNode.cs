@@ -10,7 +10,7 @@ namespace MochiBTS.Core.NodeLibrary.DecoratorNodes.Event
         public State outputState = State.Success;
         private bool cutoff;
         private ISubscribable soEvent;
-        public override string tooltip =>
+        public override string Tooltip =>
             "Executes its child normally, until the assigned Event is triggered." +
             " After the event is triggered, this node will no longer executes its child" +
             ", instead returns outputState directly. ";

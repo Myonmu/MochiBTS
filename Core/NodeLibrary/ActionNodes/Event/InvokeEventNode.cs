@@ -8,7 +8,7 @@ namespace MochiBTS.Core.NodeLibrary.ActionNodes.Event
     {
         public string soEventName;
         private IListener soEvent;
-        public override string tooltip =>
+        public override string Tooltip =>
             "Invokes a Scriptable Object event. The SO must implement IInvokable. Succeeds if invokable.";
 
         protected override void OnStart(Agent agent, Blackboard blackboard)

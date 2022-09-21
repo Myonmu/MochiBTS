@@ -2,7 +2,6 @@ using System;
 using MochiBTS.Core;
 using MochiBTS.Core.Primitives;
 using MochiBTS.Core.Primitives.DataContainers;
-using MochiBTS.Core.Primitives.Variables;
 using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEngine;

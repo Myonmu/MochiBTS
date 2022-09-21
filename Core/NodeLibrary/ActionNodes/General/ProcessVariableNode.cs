@@ -10,7 +10,7 @@ namespace MochiBTS.Core.NodeLibrary.ActionNodes.General
         public DataSource<object> variable;
         public List<BaseDataProcessor> processors;
 
-        public override string tooltip =>
+        public override string Tooltip =>
             "Apply a list of processors to a variable, immediately succeeds.";
         protected override void OnStart(Agent agent, Blackboard blackboard)
         {

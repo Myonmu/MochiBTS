@@ -7,7 +7,7 @@ namespace MochiBTS.Core.NodeLibrary.ActionNodes.General
     {
         public float duration = 1;
         private float startTime;
-        public override string tooltip =>
+        public override string Tooltip =>
             "Will keep running if duration is not reached, counting from the start of the node. Succeeds afterwards";
 
 

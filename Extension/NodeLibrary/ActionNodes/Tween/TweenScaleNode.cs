@@ -10,7 +10,7 @@ namespace MochiBTS.Extension.NodeLibrary.ActionNodes.Tween
         protected override void InitializeTweener(Agent agent, Blackboard blackboard)
         {
             targetScale.GetValue(agent, blackboard);
-            tweener = agent.transform.DOScale(targetScale.value, duration);
+            Tweener = agent.transform.DOScale(targetScale.value, duration);
         }
     }
 }

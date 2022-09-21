@@ -7,7 +7,7 @@ namespace MochiBTS.Core.NodeLibrary.DecoratorNodes.General
     {
         public float duration = 1;
         private float startTime;
-        public override string tooltip =>
+        public override string Tooltip =>
             "Will keep running and updating its child if duration is not reached, " +
             "counting from the start of the node. Succeeds afterwards and will stop" +
             "updating its child.";

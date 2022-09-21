@@ -11,7 +11,7 @@ namespace MochiBTS.Extension.NodeLibrary.ActionNodes.Tween
         protected override void InitializeTweener(Agent agent, Blackboard blackboard)
         {
             targetRotation.GetValue(agent, blackboard);
-            tweener = useLocal ?
+            Tweener = useLocal ?
                 agent.transform.DOLocalRotate(targetRotation.value, duration) :
                 agent.transform.DORotate(targetRotation.value, duration);
         }

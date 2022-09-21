@@ -6,7 +6,7 @@ namespace MochiBTS.Extension.NodeLibrary.DecoratorNodes.Tween
     {
         public int loopCount;
         public LoopType loopType;
-        public override string tooltip =>
+        public override string Tooltip =>
             "Sets the connected tweener action node to loop.";
         protected override void DecorateTweener(Tweener tweener)
         {

@@ -10,7 +10,7 @@ namespace MochiBTS.Core.NodeLibrary.DecoratorNodes.Event
         public string soEventName;
         private ISubscribable soEvent;
         private Node targetNode;
-        public override string tooltip =>
+        public override string Tooltip =>
             "Calls Interrupt on the closest interruptable action node upon SO event triggering. " +
             "The SO must implement ISubscribable.";
         public void OnEventReceive()

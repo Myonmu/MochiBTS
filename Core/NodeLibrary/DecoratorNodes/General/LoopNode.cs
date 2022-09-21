@@ -8,7 +8,7 @@ namespace MochiBTS.Core.NodeLibrary.DecoratorNodes.General
         public bool infiniteLoop;
         public int iterations;
         private int loopCounter;
-        public override string tooltip =>
+        public override string Tooltip =>
             "Keeps the connected node running. If infiniteLoop is disabled, " +
             "will succeed when the number of iterations is reached.";
         protected override void OnStart(Agent agent, Blackboard blackboard)

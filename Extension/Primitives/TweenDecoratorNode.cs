@@ -13,14 +13,14 @@ namespace MochiBTS.Extension.Primitives
             while (targetNode is DecoratorNode decoratorNode)
                 targetNode = decoratorNode.child;
             if (targetNode is ITweener tweenerNode)
-                tweenerNode.decoratorCallback += DecorateTweener;
+                tweenerNode.DecoratorCallback += DecorateTweener;
             else
                 Debug.LogError($"{GetType().Name}: Can't find tweener to decorate.");
         }
         protected override void OnStop(Agent agent, Blackboard blackboard)
         {
             if (targetNode is ITweener tweenerNode)
-                tweenerNode.decoratorCallback -= DecorateTweener;
+                tweenerNode.DecoratorCallback -= DecorateTweener;
         }
         protected override State OnUpdate(Agent agent, Blackboard blackboard)
         {

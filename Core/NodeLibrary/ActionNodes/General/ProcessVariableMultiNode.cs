@@ -10,7 +10,7 @@ namespace MochiBTS.Core.NodeLibrary.ActionNodes.General
         public DataSource<object> variableB;
         public DataSource<object> outputVariable;
         public List<BaseMultiDataProcessor> processors;
-        public override string tooltip =>
+        public override string Tooltip =>
             "Applies a list of processors to 2 variables, store the result in a 3rd variable." +
             "Immediately succeeds.";
         protected override void OnStart(Agent agent, Blackboard blackboard)

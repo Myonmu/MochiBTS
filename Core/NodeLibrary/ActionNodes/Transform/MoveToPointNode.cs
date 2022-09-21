@@ -9,7 +9,7 @@ namespace MochiBTS.Core.NodeLibrary.ActionNodes.Transform
         public float tolerance = 0.1f;
         public DataSource<Vector3> destination;
         private float sqrTolerance;
-        public override string tooltip =>
+        public override string Tooltip =>
             "Move the agent directly to the target Vector3 without any navigation." +
             " Returns Running if target is not reached. Returns Success if reached. " +
             "[This node uses reflection]";

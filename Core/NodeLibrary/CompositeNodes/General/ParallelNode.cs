@@ -6,7 +6,7 @@ namespace MochiBTS.Core.NodeLibrary.CompositeNodes.General
     {
         public int successThreshold;
 
-        public override string tooltip =>
+        public override string Tooltip =>
             "A parallel node executes all children in left to right order in the same tick. " +
             "Succeeds if number of succeeding children reaches successThreshold, fails if all children fail." +
             "Keeps running if at least one child is running.";

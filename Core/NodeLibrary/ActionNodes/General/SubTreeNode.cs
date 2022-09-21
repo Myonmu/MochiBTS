@@ -9,7 +9,7 @@ namespace MochiBTS.Core.NodeLibrary.ActionNodes.General
         public BehaviorTree subTree;
         public bool inheritBlackboard = true;
         public bool forceExecuteTree;
-        public override string tooltip =>
+        public override string Tooltip =>
             "Execute the behavior tree attached to this node. Will create a copy of the attached tree." +
             "Assigning the same tree that contains this node will cause explosion, NEVER DO THAT!";
 

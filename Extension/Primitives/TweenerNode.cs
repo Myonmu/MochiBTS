@@ -11,22 +11,22 @@ namespace MochiBTS.Extension.Primitives
         public float duration;
         public void OnInterrupt()
         {
-            tweener.Kill();
+            Tweener.Kill();
             state = State.Success;
         }
-        public Tweener tweener { get; set; }
-        public Action<Tweener> decoratorCallback { get; set; }
+        public Tweener Tweener { get; set; }
+        public Action<Tweener> DecoratorCallback { get; set; }
         protected override void OnStart(Agent agent, Blackboard blackboard)
         {
             state = State.Running;
             InitializeTweener(agent, blackboard);
-            tweener.OnComplete(() => state = State.Success);
-            decoratorCallback?.Invoke(tweener);
-            tweener.Play();
+            Tweener.OnComplete(() => state = State.Success);
+            DecoratorCallback?.Invoke(Tweener);
+            Tweener.Play();
         }
         protected override void OnStop(Agent agent, Blackboard blackboard)
         {
-            tweener.Kill();
+            Tweener.Kill();
         }
         protected override State OnUpdate(Agent agent, Blackboard blackboard)
         {

@@ -10,7 +10,7 @@ namespace MochiBTS.Core.NodeLibrary.ActionNodes.Event
         public string soEventName;
         private ISubscribable soEvent;
 
-        public override string tooltip =>
+        public override string Tooltip =>
             "Keeps running until the assigned Event is invoked. Returns outputState afterwards.";
         public void OnEventReceive()
         {

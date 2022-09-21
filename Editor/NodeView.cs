@@ -25,7 +25,7 @@ namespace MochiBTS.Editor
             viewDataKey = node.guid;
             style.left = node.position.x;
             style.top = node.position.y;
-            tooltip = node.tooltip;
+            tooltip = node.Tooltip;
 
 
             //Construct ports

@@ -1,7 +1,6 @@
 ﻿using MochiBTS.Core;
 using MochiBTS.Core.Primitives;
 using MochiBTS.Core.Primitives.DataContainers;
-using MochiBTS.Core.Primitives.Variables;
 using UnityEngine;
 using UnityEngine.UIElements;
 namespace MochiBTS.Editor

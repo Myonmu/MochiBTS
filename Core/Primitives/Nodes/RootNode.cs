@@ -5,7 +5,7 @@ namespace MochiBTS.Core.Primitives.Nodes
     public class RootNode : Node
     {
         [HideInInspector] public Node child;
-        public override string tooltip =>
+        public override string Tooltip =>
             "The evaluation of a behavior tree starts from here.";
 
         protected override void OnStart(Agent agent, Blackboard blackboard)

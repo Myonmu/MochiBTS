@@ -6,8 +6,8 @@ namespace MochiBTS.Core.Primitives.Nodes
     {
         public string animParamName;
         public DataSource<T> parameter;
-        protected Animator animator;
-        public override string tooltip => "This node sets the animator parameter attached to the agent by the given value," +
+        public Animator animator;
+        public override string Tooltip => "This node sets the animator parameter attached to the agent by the given value," +
                                           "or the value read from an accessible field from the agent or blackboard." +
                                           "Returns Success after set. [This node uses reflection] .";
 

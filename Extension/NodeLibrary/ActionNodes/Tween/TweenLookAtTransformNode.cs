@@ -14,7 +14,7 @@ namespace MochiBTS.Extension.NodeLibrary.ActionNodes.Tween
         {
             target.GetValue(agent, blackboard);
             baseVector.GetValue(agent, blackboard);
-            tweener = agent.transform.DOLookAt(target.value.position, duration, axisConstraint, baseVector.value);
+            Tweener = agent.transform.DOLookAt(target.value.position, duration, axisConstraint, baseVector.value);
         }
     }
 }

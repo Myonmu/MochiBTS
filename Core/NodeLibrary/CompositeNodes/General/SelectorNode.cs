@@ -5,7 +5,7 @@ namespace MochiBTS.Core.NodeLibrary.CompositeNodes.General
     public class SelectorNode : CompositeNode
     {
         private int currentChildIndex;
-        public override string tooltip =>
+        public override string Tooltip =>
             "A selector node executes all children in left to right order. " +
             "Only moves to the next child if current child fails." +
             "Succeeds if any child succeeds, fails if all children fail.";

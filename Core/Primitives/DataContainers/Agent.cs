@@ -1,5 +1,4 @@
 ﻿using System;
-using MochiBTS.Core.Primitives.Variables;
 using UnityEngine;
 namespace MochiBTS.Core.Primitives.DataContainers
 {

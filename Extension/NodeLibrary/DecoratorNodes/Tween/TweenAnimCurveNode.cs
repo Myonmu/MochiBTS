@@ -7,7 +7,7 @@ namespace MochiBTS.Extension.NodeLibrary.DecoratorNodes.Tween
     {
         public AnimationCurve animationCurve;
 
-        public override string tooltip =>
+        public override string Tooltip =>
             "Sets the ease of the connected tweener action node to an animation curve.";
         protected override void DecorateTweener(Tweener tweener)
         {
