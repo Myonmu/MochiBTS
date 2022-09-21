@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using DefaultNamespace.MochiVariable;
 using UnityEditor;
 using UnityEngine;
 namespace DefaultNamespace.Editor
@@ -138,40 +139,43 @@ namespace DefaultNamespace.Editor
         }
 
 
-        public bool ReEvaluate(SerializedProperty prop)
+        public bool ReEvaluate(/*SerializedProperty prop*/)
         {
             ScriptableObject selectedComp;
+            var target = propertyObject as BindingSource;
             try {
                 //try to check if object is null or missing ref
-                selectedComp =
-                    ((ScriptableObject)prop.FindPropertyRelative("obj").boxedValue);
+                selectedComp = target.unityObj as ScriptableObject;
+                //((ScriptableObject)prop.FindPropertyRelative("obj").boxedValue);
             } catch {
-                WipeAll(prop);
+                WipeAll(/*prop*/);
                 return false;
             }
             //Now check property modification
             if (selectedComp is null) return false;
             PopulateFirstProp(selectedComp);
 
-            var selectedProperty = prop.FindPropertyRelative("selectedProperty").stringValue;
+            var selectedProperty = target.selectedProperty;
+            //prop.FindPropertyRelative("selectedProperty").stringValue;
             if (properties.Contains(selectedProperty)) selectedPropertyIndex = properties.IndexOf(selectedProperty);
             if (properties.Count > 0 && selectedPropertyIndex >= properties.Count) {
                 selectedPropertyIndex = 0;
             }
 
-            UpdateSelected(prop);
+            UpdateSelected(/*prop*/);
 
             //Check sub
             if (selectedProperty is null) return false;
             PopulateSecondProp(selectedComp, selectedProperty);
 
-            var selectedSub = prop.FindPropertyRelative("selectedSub").stringValue;
+            var selectedSub = target.selectedSub; 
+                //prop.FindPropertyRelative("selectedSub").stringValue;
             if (subProperties.Contains(selectedSub)) selectedSubIndex = subProperties.IndexOf(selectedSub);
             if (subProperties.Count > 0 && selectedSubIndex >= subProperties.Count) {
                 selectedSubIndex = 0;
             }
 
-            UpdateSelected(prop);
+            UpdateSelected();
 
             bind.Invoke();
             return true;
@@ -185,6 +189,15 @@ namespace DefaultNamespace.Editor
                 prop.FindPropertyRelative("selectedSub").stringValue = subProperties[selectedSubIndex];
             prop.serializedObject.ApplyModifiedProperties();
             prop.serializedObject.Update();
+        }
+        
+        public void UpdateSelected()
+        {
+            var target = propertyObject as BindingSource;
+            if (properties.Count > selectedPropertyIndex)
+                target.selectedProperty = properties[selectedPropertyIndex];
+            if (subProperties.Count > selectedSubIndex)
+                target.selectedSub = subProperties[selectedSubIndex];
         }
 
         private void WipeAll(SerializedProperty prop)
@@ -201,6 +214,20 @@ namespace DefaultNamespace.Editor
             resetDelegates.Invoke();
             prop.serializedObject.ApplyModifiedProperties();
             prop.serializedObject.Update();
+        }
+        
+        private void WipeAll()
+        {
+            var target = propertyObject as BindingSource;
+
+            properties.Clear();
+            target.selectedProperty = null;
+
+            target.selectedSub = null;
+
+            selectedSubIndex = 0;
+            subProperties.Clear();
+            resetDelegates.Invoke();
         }
     }
 }

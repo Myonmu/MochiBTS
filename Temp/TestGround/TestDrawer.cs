@@ -5,7 +5,8 @@ namespace DefaultNamespace.TestGround
 {
     public class TestDrawer : MonoBehaviour
     {
-        public List<MochiVariable<float>> composites;
+        [SerializeReference]
+        public List<IMochiVariableBase> composites = new ();
 
         private void Start()
         {

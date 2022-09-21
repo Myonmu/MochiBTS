@@ -8,82 +8,88 @@ using UnityEditor;
 using UnityEngine;
 namespace DefaultNamespace.Editor
 {
-    [CustomPropertyDrawer(typeof(SoBindingSource<>))]
-    public class SoBindingSourceDrawer : PropertyDrawer
+    [CustomPropertyDrawer(typeof(BindingSource<>))]
+    public class BindingSourceDrawer : PropertyDrawer
     {
+        /* Since all binding source share the same property drawer, we keep a registry of all the instances
+         * to avoid using reflections for initialization. (trade memory for performance)
+         */
+        public struct BindingSourceEntry
+        {
+             public int id;
+             public object propertyObject;
+             public Type objectType;
+             public Action refresh;
+             public Action reflect;
+             public Action bind;
+             public Action reEval;
+             public Func<object> getValue;
+        }
         private static readonly Regex MatchArrayElement = new(@"data\[(\d+)\]$");
-
         //private static readonly Dictionary<string, BindingSourceEntry> Entries = new();
-        private static readonly Dictionary<int, Dictionary<string, SoBindingSourceEntry>> Entries = new();
+        private static readonly Dictionary<int, Dictionary<string, BindingSourceEntry>> Entries = new();
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             var entry = Initialize(property);
             var maxWidth = position.width;
             EditorGUI.BeginProperty(position, label, property);
-            position.width = 0.4f * maxWidth;
+            position.width = 0.3f * maxWidth;
             EditorGUI.BeginChangeCheck();
             property.serializedObject.Update();
             EditorGUI.PropertyField(position, property.FindPropertyRelative("obj"), GUIContent.none);
             property.serializedObject.ApplyModifiedProperties();
+            property.serializedObject.Update();
             if (EditorGUI.EndChangeCheck()) {
                 //Debug.Log($"{property.propertyPath},idx{index},init{initialized}");
-                property.serializedObject.Update();
-                entry.Reflect(property);
-                entry.UpdateSelected(property);
-                entry.SubReflect(property);
-                entry.UpdateSelected(property);
-                entry.bind?.Invoke();
+                //property.serializedObject.Update();
+                entry.refresh?.Invoke();
+                entry.reflect?.Invoke();
                 property.serializedObject.ApplyModifiedProperties();
                 property.serializedObject.Update();
             }
-
-            position.width = 0.3f * maxWidth;
-            position.x += 0.4f * maxWidth;
-            if (entry.properties is not null) {
-                if (entry.properties.Count < 1) {
-                    EditorGUI.HelpBox(position, "Unavailable", MessageType.Warning);
-                } else {
-                    EditorGUI.BeginChangeCheck();
-                    property.serializedObject.Update();
-                    entry.selectedPropertyIndex = EditorGUI.Popup(position, entry.selectedPropertyIndex,
-                        entry.properties.ToArray());
-                    property.serializedObject.ApplyModifiedProperties();
-                    if (EditorGUI.EndChangeCheck()) {
-                        property.serializedObject.Update();
-                        entry.UpdateSelected(property);
-                        entry.SubReflect(property);
-                        entry.UpdateSelected(property);
-                        entry.bind?.Invoke();
-                        property.serializedObject.ApplyModifiedProperties();
-                        property.serializedObject.Update();
-                    }
-                }
-            }
-
+            position.width = maxWidth * 0.35f;
             position.x += 0.3f * maxWidth;
-            if (entry.subProperties is not null) {
-                if (entry.subProperties.Count < 1) {
-                    EditorGUI.HelpBox(position, "Unavailable", MessageType.Warning);
+            var selectedID = property.FindPropertyRelative("selectedComponentIndex");
+
+            if (entry.propertyObject.GetType().GetField("componentLabels").GetValue(entry.propertyObject) is List<string> list) {
+                //Debug.Log("Evaluating popup");
+                EditorGUI.BeginChangeCheck();
+                property.serializedObject.Update();
+                selectedID.intValue = EditorGUI.Popup(position, selectedID.intValue, list.ToArray());
+                property.serializedObject.ApplyModifiedProperties();
+                if (EditorGUI.EndChangeCheck()) {
+                    //property.serializedObject.Update();
+                    entry.reflect?.Invoke();
+                    entry.bind?.Invoke();
+                    property.serializedObject.ApplyModifiedProperties();
+                    property.serializedObject.Update();
+                    
+                }
+            }
+
+            position.x += 0.35f * maxWidth;
+            var selectedProp = property.FindPropertyRelative("selectedPropertyIndex");
+            if (entry.propertyObject.GetType().GetField("properties").GetValue(entry.propertyObject) is List<string> props) {
+                if (props.Count < 1) {
+                    EditorGUI.HelpBox(position,"Unavailable",MessageType.Warning);
                 } else {
                     EditorGUI.BeginChangeCheck();
                     property.serializedObject.Update();
-                    entry.selectedSubIndex =
-                        EditorGUI.Popup(position, entry.selectedSubIndex, entry.subProperties.ToArray());
+                    selectedProp.intValue = EditorGUI.Popup(position, selectedProp.intValue, props.ToArray());
                     property.serializedObject.ApplyModifiedProperties();
                     if (EditorGUI.EndChangeCheck()) {
-                        property.serializedObject.Update();
-                        entry.UpdateSelected(property);
+                        //property.serializedObject.Update();
                         entry.bind?.Invoke();
                         property.serializedObject.ApplyModifiedProperties();
                         property.serializedObject.Update();
                     }
                 }
-            }
 
+            }
             EditorGUI.EndProperty();
         }
-
+        
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
@@ -92,34 +98,41 @@ namespace DefaultNamespace.Editor
 
         public static void ReEvaluateBinding(SerializedProperty prop)
         {
-            //if (prop is null) return;
-            var path = prop.propertyPath + ".soBindingSource";
+            var path = prop.propertyPath;
             var id = prop.serializedObject.targetObject.GetInstanceID();
-            if (Entries.ContainsKey(id) && Entries[id].ContainsKey(path)) {
+            if (Entries.ContainsKey(id)&& Entries[id].ContainsKey(path)) { 
                 var target = Entries[id][path];
-                target.ReEvaluate(/*prop*/);
+                target.reEval?.Invoke();
             }
         }
 
 
-        protected static SoBindingSourceEntry Initialize(SerializedProperty prop)
+        protected static BindingSourceEntry Initialize(SerializedProperty prop)
         {
-            if (prop is null) return null;
-            var serializedObject = prop.serializedObject;
+            var serializedObject = prop.serializedObject; 
             var path = prop.propertyPath;
             var id = prop.serializedObject.targetObject.GetInstanceID();
+            /*
+            var firstMatch = MatchArrayElement.Match(path);
+            if (firstMatch.Success && int.TryParse(firstMatch.Groups[1].Value, out var id)) {
+                if (Entries.ContainsKey(key)) {
+                    var target = Entries[key];
+                    if (target.id != id) {
+                        Entries.Clear();
+                    }
+                }
+            }
+            */
 
-            if (Entries.ContainsKey(id) && Entries[id].ContainsKey(path)) {
+            if (Entries.ContainsKey(id)&& Entries[id].ContainsKey(path)) { 
                 var target = Entries[id][path];
                 return target;
             }
-
-            SoBindingSourceEntry entry = new();
+            
+            BindingSourceEntry entry = new();
             //if (initialized) return;
             //Debug.Log($"Initialize {id+path}");
-            entry.propertyObject = serializedObject == null || serializedObject.targetObject == null
-                ? null
-                : serializedObject.targetObject;
+            entry.propertyObject = serializedObject == null || serializedObject.targetObject == null ? null : serializedObject.targetObject;
             entry.objectType = entry.propertyObject?.GetType();
             if (!string.IsNullOrEmpty(path) && entry.propertyObject != null) {
                 var splitPath = path.Split('.');
@@ -132,33 +145,29 @@ namespace DefaultNamespace.Editor
                     //both arrays and lists implement the IList interface
                     if (fieldType != null && typeof(IList).IsAssignableFrom(fieldType)) {
                         //IList items are serialized like this: `Array.data[0]`
-                        Debug.AssertFormat(pathNode.Equals("Array", StringComparison.Ordinal),
-                            serializedObject.targetObject, "Expected path node 'Array', but found '{0}'", pathNode);
+                        Debug.AssertFormat(pathNode.Equals("Array", StringComparison.Ordinal), serializedObject.targetObject, "Expected path node 'Array', but found '{0}'", pathNode);
 
                         //just skip the `Array` part of the path
                         pathNode = splitPath[++i];
 
                         //match the `data[0]` part of the path and extract the IList item index
                         var elementMatch = MatchArrayElement.Match(pathNode);
-                        if (elementMatch.Success && int.TryParse(elementMatch.Groups[1].Value, out entry.id)) {
+                        if (elementMatch.Success && int.TryParse(elementMatch.Groups[1].Value, out  entry.id)) {
                             var objectArray = (IList)entry.propertyObject;
                             var validArrayEntry = objectArray != null && entry.id < objectArray.Count;
                             entry.propertyObject = validArrayEntry ? objectArray[entry.id] : null;
                             entry.objectType = fieldType.IsArray
                                 ? fieldType.GetElementType() //only set for arrays
-                                : objectArray?[entry.id].GetType(); 
+                                : fieldType.GenericTypeArguments[0]; //type of `T` in List<T>
                         } else {
-                            Debug.LogErrorFormat(serializedObject.targetObject,
-                                "Unexpected path format for array item: '{0}'", pathNode);
+                            Debug.LogErrorFormat(serializedObject.targetObject, "Unexpected path format for array item: '{0}'", pathNode);
                         }
-
                         //reset fieldType, so we don't end up in the IList branch again next iteration
                         fieldType = null;
                     } else {
                         FieldInfo field;
                         var instanceType = entry.objectType;
-                        var fieldBindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic |
-                                                BindingFlags.FlattenHierarchy;
+                        var fieldBindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy;
                         do {
                             field = instanceType.GetField(pathNode, fieldBindingFlags);
 
@@ -169,45 +178,26 @@ namespace DefaultNamespace.Editor
                         } while (field == null && instanceType != typeof(object));
 
                         //store object info for next iteration or to return
-                        entry.propertyObject = field == null || entry.propertyObject == null
-                            ? null
-                            : field.GetValue(entry.propertyObject);
+                        entry.propertyObject = field == null || entry.propertyObject == null ? null : field.GetValue(entry.propertyObject);
                         fieldType = field == null ? null : field.FieldType;
                         entry.objectType = fieldType;
                     }
                 }
             }
-
             if (entry.propertyObject != null) {
-                entry.bind = (Action)entry.propertyObject.GetType().GetMethod("Bind")
-                    ?.CreateDelegate(typeof(Action), entry.propertyObject);
-                entry.resetDelegates = (Action)entry.propertyObject.GetType().GetMethod("ResetDelegate")
-                    ?.CreateDelegate(typeof(Action), entry.propertyObject);
-                entry.getValue = (Func<object>)entry.propertyObject.GetType().GetMethod("BoxedValue")
-                    ?.CreateDelegate(typeof(Func<object>), entry.propertyObject);
-                entry.getValueType = (Func<Type>)entry.propertyObject.GetType().GetMethod("GetValueType")
-                    ?.CreateDelegate(typeof(Func<Type>), entry.propertyObject);
+                entry.refresh = (Action)entry.propertyObject.GetType().GetMethod("Refresh")?.CreateDelegate(typeof(Action), entry.propertyObject);
+                entry.reflect = (Action)entry.propertyObject.GetType().GetMethod("Reflect")?.CreateDelegate(typeof(Action), entry.propertyObject);
+                entry.bind = (Action)entry.propertyObject.GetType().GetMethod("Bind")?.CreateDelegate(typeof(Action), entry.propertyObject);
+                entry.reEval = (Action)entry.propertyObject.GetType().GetMethod("ReEvaluate")?.CreateDelegate(typeof(Action), entry.propertyObject);
+                entry.getValue = (Func<object>)entry.propertyObject.GetType().GetMethod("BoxedValue")?.CreateDelegate(typeof(Func<object>), entry.propertyObject);
             }
-
             //initialized = true;
             if (!Entries.ContainsKey(id)) {
-                Entries.Add(id, new Dictionary<string, SoBindingSourceEntry>());
+                Entries.Add(id,new Dictionary<string, BindingSourceEntry>());
             }
-
-            Entries[id].Add(path, entry);
-            entry.resetDelegates?.Invoke();
-            if (entry.ReEvaluate(/*prop*/)) return entry;
-            entry.Reflect(prop);
+            Entries[id].Add(path,entry);
             entry.bind?.Invoke();
             return entry;
-        }
-
-        public static SoBindingSourceEntry GetEntry(SerializedProperty prop)
-        {
-            var path = prop.propertyPath;
-            var id = prop.serializedObject.targetObject.GetInstanceID();
-            if (!Entries.ContainsKey(id) || !Entries[id].ContainsKey(path)) return null;
-            return Entries[id][path];
         }
 
         public static void InvalidateCache()
@@ -219,10 +209,11 @@ namespace DefaultNamespace.Editor
         {
             Initialize(prop);
         }
-
+        
 
         public static void InvalidateCache(SerializedProperty prop)
         {
+            
             var id = prop.serializedObject.targetObject.GetInstanceID();
             if (!Entries.ContainsKey(id)) return;
             Entries[id].Clear();
@@ -237,7 +228,7 @@ namespace DefaultNamespace.Editor
             var target = Entries[id][path];
             if (target.getValue is null) return "Not Bound";
             var result = target.getValue.Invoke();
-            return result is null ? "NULL" : result.ToString();
+            return result is null? "NULL":result.ToString();
         }
     }
 }

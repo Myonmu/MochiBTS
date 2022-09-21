@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using DefaultNamespace.TestGround;
-using Unity.Mathematics;
+﻿using DefaultNamespace.TestGround;
 using UnityEditor;
 using UnityEngine;
 namespace DefaultNamespace.Editor

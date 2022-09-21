@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using DefaultNamespace.MochiVariable;
 using UnityEditor;
 using UnityEngine;
 
@@ -188,18 +189,19 @@ namespace DefaultNamespace.Editor
         }
 
 
-        public bool ReEvaluate(SerializedProperty prop)
+        public bool ReEvaluate(/*SerializedProperty prop*/)
         {
             Component[] currentComps;
+            var target = propertyObject as BindingSource;
             try
             {
                 //try to check if object is null or missing ref
-                currentComps =
-                    ((GameObject)prop.FindPropertyRelative("obj").boxedValue).GetComponents(typeof(Component));
+                currentComps = (target.baseObj as GameObject).GetComponents(typeof(Component));
+                //((GameObject)prop.FindPropertyRelative("obj").boxedValue).GetComponents(typeof(Component));
             }
             catch
             {
-                WipeAll(prop);
+                WipeAll(/*prop*/);
                 return false;
             }
             //The object is present, check if there is a change in component structure;
@@ -225,8 +227,8 @@ namespace DefaultNamespace.Editor
                 }
             }
 
-            var prevSelectedCompId =
-                ((Component)prop.FindPropertyRelative("selectedComponent").boxedValue).GetInstanceID();
+            var prevSelectedCompId = (target.unityObj as Component).GetInstanceID();
+                //((Component)prop.FindPropertyRelative("selectedComponent").boxedValue).GetInstanceID();
             var prevSelectedPersists = false;
             for (var index = 0; index < currentComps.Length; index++)
             {
@@ -236,41 +238,52 @@ namespace DefaultNamespace.Editor
                 break;
             }
 
-            if (!prevSelectedPersists)
-            {
-                prop.FindPropertyRelative("selectedComponent").boxedValue = null;
+            if (!prevSelectedPersists) {
+                target.unityObj = null;
+                //prop.FindPropertyRelative("selectedComponent").boxedValue = null;
                 selectedPropertyIndex = 0;
             }
 
             //Now check property modification
-            var selectedComp = prop.FindPropertyRelative("selectedComponent").boxedValue;
-            if (selectedComp is null) return false;
+            //prop.FindPropertyRelative("selectedComponent").boxedValue;
+            if (target.unityObj is not Component selectedComp) return false;
             PopulateFirstProp(selectedComp);
 
-            var selectedProperty = prop.FindPropertyRelative("selectedProperty").stringValue;
+            var selectedProperty = target.selectedProperty;
+                //prop.FindPropertyRelative("selectedProperty").stringValue;
             if (properties.Contains(selectedProperty)) selectedPropertyIndex = properties.IndexOf(selectedProperty);
             if (properties.Count > 0 && selectedPropertyIndex >= properties.Count)
             {
                 selectedPropertyIndex = 0;
             }
 
-            UpdateSelected(prop);
+            UpdateSelected();
 
             //Check sub
             if (selectedProperty is null) return false;
             PopulateSecondProp(selectedComp, selectedProperty);
 
-            var selectedSub = prop.FindPropertyRelative("selectedSub").stringValue;
+            var selectedSub = target.selectedSub;
+                //prop.FindPropertyRelative("selectedSub").stringValue;
             if (subProperties.Contains(selectedSub)) selectedSubIndex = subProperties.IndexOf(selectedSub);
             if (subProperties.Count > 0 && selectedSubIndex >= subProperties.Count)
             {
                 selectedSubIndex = 0;
             }
 
-            UpdateSelected(prop);
+            UpdateSelected();
 
             bind.Invoke();
             return true;
+        }
+
+        public void UpdateSelected()
+        {
+            var target = propertyObject as BindingSource;
+            if (properties.Count > selectedPropertyIndex)
+                target.selectedProperty = properties[selectedPropertyIndex];
+            if (subProperties.Count > selectedSubIndex)
+                target.selectedSub = subProperties[selectedSubIndex];
         }
 
         public void UpdateSelected(SerializedProperty prop)
@@ -303,6 +316,26 @@ namespace DefaultNamespace.Editor
             resetDelegates.Invoke();
             prop.serializedObject.ApplyModifiedProperties();
             prop.serializedObject.Update();
+        }
+
+        private void WipeAll()
+        {
+            var target = propertyObject as BindingSource;
+
+            components.Clear();
+            componentNames.Clear();
+            target.unityObj = null;
+
+            selectedComponentIndex = 0;
+            properties.Clear();
+            selectedComponentIndex = 0;
+            target.selectedProperty = null;
+
+            target.selectedSub = null;
+
+            selectedSubIndex = 0;
+            subProperties.Clear();
+            resetDelegates.Invoke();
         }
     }
 }

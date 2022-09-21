@@ -12,13 +12,20 @@ namespace DefaultNamespace.Editor
     [CustomEditor(typeof(TestDrawer))]
     public class VariableBoardInspector : UnityEditor.Editor
     {
+        private TestDrawer drawer;
         private readonly List<string> varNames = new();
         private bool needRevalidateNames = true;
         private Dictionary<int, bool> namingConflictStats = new();
         private ReorderableList list;
+        private int selectedTypeIndex = 0;
+        private Dictionary<string, Type> typeCache = new();
+        private string[] typeNameCache;
 
         private void OnEnable()
         {
+            drawer = target as TestDrawer;
+            FetchAllVariableTypes();
+            typeNameCache = typeCache.Keys.ToArray();
             needRevalidateNames = true;
             var prop = serializedObject.FindProperty("composites");
             list = new ReorderableList(serializedObject, prop,
@@ -109,9 +116,7 @@ namespace DefaultNamespace.Editor
                 //Debug.Log("ChangeDetected");
                 SoBindingSourceDrawer.InvalidateCache(list.serializedProperty);
                 GoBindingSourceDrawer.InvalidateCache(list.serializedProperty);
-                varNames.Clear();
-                namingConflictStats.Clear();
-                needRevalidateNames = true;
+                ReEvaluateNaming();
                 //Repaint();
             };
 
@@ -120,15 +125,25 @@ namespace DefaultNamespace.Editor
                 foreach (var index in l.selectedIndices)
                 {
                     var element = list.serializedProperty.GetArrayElementAtIndex(index);
-                    if (!element.FindPropertyRelative("bindVariable").boolValue) continue;
+                    var bind = element.FindPropertyRelative("bindVariable");
+                    var enumVal = bind.enumNames[bind.enumValueIndex];
+                    if (enumVal == "Value") continue;
                     var bindingSource = element.FindPropertyRelative("bindingSource");
-                    SoBindingSourceDrawer.ReEvaluateBinding(bindingSource);
-                    GoBindingSourceDrawer.ReEvaluateBinding(bindingSource);
-                    varNames.Clear();
-                    namingConflictStats.Clear();
-                    needRevalidateNames = true;
+                    
+                    SoBindingSourceDrawer.ReEvaluateBinding(element);
+                    GoBindingSourceDrawer.ReEvaluateBinding(element);
+                    ReEvaluateNaming();
                 }
             };
+            
+            
+        }
+        private void ReEvaluateNaming()
+        {
+
+            varNames.Clear();
+            namingConflictStats.Clear();
+            needRevalidateNames = true;
         }
         private static string ValStringFromGo(SerializedProperty element, out bool boundValueIsNull)
         {
@@ -163,15 +178,27 @@ namespace DefaultNamespace.Editor
 
         public override void OnInspectorGUI()
         {
+            selectedTypeIndex = EditorGUILayout.Popup("Type", selectedTypeIndex, typeCache.Keys.ToArray());
+            if (GUILayout.Button("Create Variable")) {
+                ReEvaluateNaming();
+                var v = Instantiate(typeCache[typeNameCache[selectedTypeIndex]]);
+                drawer.composites.Add(v);
+            }
             serializedObject.Update();
-            list.DoLayoutList();
+            if(list is null) OnEnable();
+            else
+                list.DoLayoutList();
             serializedObject.ApplyModifiedProperties();
         }
 
-        public static List<Type> FetchAllVariableTypes()
+        private void FetchAllVariableTypes()
         {
+            typeCache.Clear();
             var cache = TypeCache.GetTypesDerivedFrom<IMochiVariableBase>();
-            return cache.Where(t => !t.IsAbstract && !t.IsGenericTypeDefinition).ToList();
+            foreach (var t in cache) {
+                if(t.IsAbstract||t.IsGenericTypeDefinition||t.IsGenericType)continue;
+                typeCache.Add(t.Name,t);
+            }
         }
 
         public static IMochiVariableBase Instantiate(Type varType)

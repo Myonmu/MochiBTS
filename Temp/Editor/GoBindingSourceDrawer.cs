@@ -129,15 +129,23 @@ namespace DefaultNamespace.Editor
 
         public static void ReEvaluateBinding(SerializedProperty prop)
         {
-            if (prop is null) return;
-            var path = prop.propertyPath;
+            var path = prop.propertyPath + ".goBindingSource";
             var id = prop.serializedObject.targetObject.GetInstanceID();
             if (Entries.ContainsKey(id) && Entries[id].ContainsKey(path))
             {
                 var target = Entries[id][path];
-                target.ReEvaluate(prop);
+                target.ReEvaluate(/*prop*/);
             }
         }
+        public static void ReEvaluateBinding(string path, int id)
+        {
+            if (Entries.ContainsKey(id) && Entries[id].ContainsKey(path))
+            {
+                var target = Entries[id][path];
+                target.ReEvaluate(/*prop*/);
+            }
+        }
+        
 
 
         protected static GoBindingSourceEntry Initialize(SerializedProperty prop)
@@ -145,17 +153,6 @@ namespace DefaultNamespace.Editor
             var serializedObject = prop.serializedObject;
             var path = prop.propertyPath;
             var id = prop.serializedObject.targetObject.GetInstanceID();
-            /*
-            var firstMatch = MatchArrayElement.Match(path);
-            if (firstMatch.Success && int.TryParse(firstMatch.Groups[1].Value, out var id)) {
-                if (Entries.ContainsKey(key)) {
-                    var target = Entries[key];
-                    if (target.id != id) {
-                        Entries.Clear();
-                    }
-                }
-            }
-            */
 
             if (Entries.ContainsKey(id) && Entries[id].ContainsKey(path))
             {
@@ -199,7 +196,7 @@ namespace DefaultNamespace.Editor
                             entry.propertyObject = validArrayEntry ? objectArray[entry.id] : null;
                             entry.objectType = fieldType.IsArray
                                 ? fieldType.GetElementType() //only set for arrays
-                                : fieldType.GenericTypeArguments[0]; //type of `T` in List<T>
+                                : objectArray?[entry.id].GetType(); 
                         }
                         else
                         {
@@ -256,7 +253,7 @@ namespace DefaultNamespace.Editor
 
             Entries[id].Add(path, entry);
             entry.resetDelegates?.Invoke();
-            if (entry.ReEvaluate(prop)) return entry;
+            if (entry.ReEvaluate(/*prop*/)) return entry;
             entry.Refresh(prop);
             entry.Reflect(prop);
             entry.bind?.Invoke();

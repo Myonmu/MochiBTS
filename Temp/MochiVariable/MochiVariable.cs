@@ -14,8 +14,8 @@ namespace DefaultNamespace.MochiVariable
         public string key;
         [SerializeField] private BindingMode bindVariable;
         [SerializeField] private T val;
-        [SerializeField] private GoBindingSource<T> goBindingSource;
-        [SerializeField] private SoBindingSource<T> soBindingSource;
+        [SerializeField] private GoBindingSource<T> goBindingSource = new();
+        [SerializeField] private SoBindingSource<T> soBindingSource = new();
 
         public void InitializeBinding()
         {
