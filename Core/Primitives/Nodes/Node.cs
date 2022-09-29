@@ -53,5 +53,6 @@ namespace MochiBTS.Core.Primitives.Nodes
         protected abstract void OnStart(Agent agent, Blackboard blackboard);
         protected abstract void OnStop(Agent agent, Blackboard blackboard);
         protected abstract State OnUpdate(Agent agent, Blackboard blackboard);
+        public virtual void UpdateInfo(){}
     }
 }

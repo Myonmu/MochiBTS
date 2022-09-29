@@ -20,5 +20,10 @@ namespace MochiBTS.Core.Primitives.Nodes
         {
 
         }
+
+        public override void UpdateInfo()
+        {
+            info = animParamName;
+        }
     }
 }

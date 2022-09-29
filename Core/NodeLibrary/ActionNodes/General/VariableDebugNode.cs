@@ -22,5 +22,10 @@ namespace MochiBTS.Core.NodeLibrary.ActionNodes.General
             Debug.Log(variable.value);
             return State.Success;
         }
+
+        public override void UpdateInfo()
+        {
+            info = variable.value.ToString();
+        }
     }
 }

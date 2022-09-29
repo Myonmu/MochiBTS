@@ -36,5 +36,10 @@ namespace MochiBTS.Core.NodeLibrary.ActionNodes.Event
         {
             return state;
         }
+
+        public override void UpdateInfo()
+        {
+            info = soEventName;
+        }
     }
 }

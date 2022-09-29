@@ -45,5 +45,10 @@ namespace MochiBTS.Core.NodeLibrary.ActionNodes.General
             cloned.subTree = treeClone;
             return cloned;
         }
+
+        public override void UpdateInfo()
+        {
+            info = subTree.name;
+        }
     }
 }

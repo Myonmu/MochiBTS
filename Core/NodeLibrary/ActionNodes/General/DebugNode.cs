@@ -22,5 +22,10 @@ namespace MochiBTS.Core.NodeLibrary.ActionNodes.General
             Debug.Log(message);
             return State.Success;
         }
+
+        public override void UpdateInfo()
+        {
+            info = message;
+        }
     }
 }

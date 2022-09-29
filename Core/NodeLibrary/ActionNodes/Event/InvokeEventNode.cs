@@ -30,5 +30,10 @@ namespace MochiBTS.Core.NodeLibrary.ActionNodes.Event
             soEvent?.OnEventReceive();
             return State.Success;
         }
+
+        public override void UpdateInfo()
+        {
+            info = soEventName;
+        }
     }
 }

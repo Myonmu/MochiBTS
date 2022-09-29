@@ -1,4 +1,5 @@
-﻿using MochiBTS.Core.Primitives.DataContainers;
+﻿using System.Globalization;
+using MochiBTS.Core.Primitives.DataContainers;
 using MochiBTS.Core.Primitives.Nodes;
 using UnityEngine;
 namespace MochiBTS.Core.NodeLibrary.ActionNodes.General
@@ -21,6 +22,11 @@ namespace MochiBTS.Core.NodeLibrary.ActionNodes.General
         protected override State OnUpdate(Agent agent, Blackboard blackboard)
         {
             return Time.time - startTime > duration ? State.Success : State.Running;
+        }
+
+        public override void UpdateInfo()
+        {
+            info = $"{duration.ToString(CultureInfo.InvariantCulture)} sec";
         }
     }
 }
