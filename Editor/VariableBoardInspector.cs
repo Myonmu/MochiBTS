@@ -16,18 +16,18 @@ namespace MochiBTS.Editor
         private VariableBoard drawer;
         private readonly List<string> varNames = new();
         private bool needRevalidateNames = true;
-        private Dictionary<int, bool> namingConflictStats = new();
+        private readonly Dictionary<int, bool> namingConflictStats = new();
         private ReorderableList list;
         private int selectedTypeIndex = 0;
-        private Dictionary<string, Type> typeCache = new();
-        private string[] typeNameCache;
+        private static readonly Dictionary<string, Type> TypeCache = new();
+        private static string[] typeNameCache;
         private bool forceFolding = false;
 
         private void OnEnable()
         {
             drawer = target as VariableBoard;
             FetchAllVariableTypes();
-            typeNameCache = typeCache.Keys.ToArray();
+            typeNameCache = TypeCache.Keys.ToArray();
             needRevalidateNames = true;
             SerializedProperty prop = null;
             try
@@ -201,11 +201,11 @@ namespace MochiBTS.Editor
 
         public override void OnInspectorGUI()
         {
-            selectedTypeIndex = EditorGUILayout.Popup("Type", selectedTypeIndex, typeCache.Keys.ToArray());
+            selectedTypeIndex = EditorGUILayout.Popup("Type", selectedTypeIndex, TypeCache.Keys.ToArray());
             if (GUILayout.Button("Create Variable"))
             {
                 ReEvaluateNaming();
-                var v = Instantiate(typeCache[typeNameCache[selectedTypeIndex]]);
+                var v = Instantiate(TypeCache[typeNameCache[selectedTypeIndex]]);
                 drawer.composites.Add(v);
                 //OnEnable();
             }
@@ -224,12 +224,12 @@ namespace MochiBTS.Editor
 
         private void FetchAllVariableTypes()
         {
-            typeCache.Clear();
-            var cache = TypeCache.GetTypesDerivedFrom<IMochiVariableBase>();
+            TypeCache.Clear();
+            var cache = UnityEditor.TypeCache.GetTypesDerivedFrom<IMochiVariableBase>();
             foreach (var t in cache)
             {
                 if (t.IsAbstract || t.IsGenericTypeDefinition || t.IsGenericType) continue;
-                typeCache.Add(t.Name, t);
+                TypeCache.Add(t.Name, t);
             }
         }
 

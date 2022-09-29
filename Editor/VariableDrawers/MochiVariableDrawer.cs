@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEngine;
 namespace MochiBTS.Editor.VariableDrawers
 {
-    [CustomPropertyDrawer(typeof(MochiVariable<>))]
+    [CustomPropertyDrawer(typeof(MochiVariable<>),true)]
     public class MochiVariableDrawer : PropertyDrawer
     {
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)

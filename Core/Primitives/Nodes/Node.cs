@@ -17,6 +17,7 @@ namespace MochiBTS.Core.Primitives.Nodes
         //[HideInInspector] public Blackboard blackboard;
         //[HideInInspector] public Agent agent;
         [TextArea] public string description;
+        [HideInInspector] public string info;
         public virtual string Tooltip { get; }
 
         public State UpdateNode(Agent agent, Blackboard blackboard)

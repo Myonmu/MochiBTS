@@ -2,13 +2,13 @@
 using System.Linq;
 using MochiBTS.Core.Primitives.DataContainers;
 using MochiBTS.Core.Primitives.DataProcessors;
-using MochiBTS.Core.Primitives.Nodes;
-namespace MochiBTS.Core.NodeLibrary.ActionNodes.General
+
+namespace MochiBTS.Core.Primitives.Nodes
 {
-    public class ProcessVariableNode : ActionNode
+    public class ProcessVariableNode<T> : ActionNode
     {
-        public DataSource<object> variable;
-        public List<BaseDataProcessor> processors;
+        public DataSource<T> variable;
+        public List<DataProcessor<T>> processors;
 
         public override string Tooltip =>
             "Apply a list of processors to a variable, immediately succeeds.";

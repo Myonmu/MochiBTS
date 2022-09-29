@@ -35,10 +35,16 @@ namespace MochiBTS.Editor
             //Add base uss class labels
             SetupClasses();
 
+            var serializedObject = new SerializedObject(node);
             //Set up description label
             var descriptionLabel = this.Q<Label>("description");
             descriptionLabel.bindingPath = "description";
-            descriptionLabel.Bind(new SerializedObject(node));
+            descriptionLabel.Bind(serializedObject);
+            
+            //Set up info label
+            var infoLabel = this.Q<Label>("info");
+            infoLabel.bindingPath = "info";
+            infoLabel.Bind(serializedObject);
 
 
         }

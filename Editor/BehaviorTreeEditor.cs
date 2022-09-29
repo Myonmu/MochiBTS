@@ -107,7 +107,7 @@ namespace MochiBTS.Editor
 
         }
 
-        [MenuItem("MochiBTSEditor/Editor")]
+        [MenuItem("MochiBTS/Editor")]
         public static void OpenWindow()
         {
             var wnd = GetWindow<BehaviorTreeEditor>();
