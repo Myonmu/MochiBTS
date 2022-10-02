@@ -2,11 +2,13 @@
 
 **Current Focus: Changing the variable system to reduce allocation for each variable, and add binding (referencing another variable). (currently functional, now adding editor juice)**
 
-A generic BTS for Unity, using graph view and SO. There is a search window that should automatically add custom nodes in the correct hierachy.
+A generic BTS for Unity, using graph view and SO. There is a search window that should automatically add custom nodes in the correct hierachy. Though, it is said that Unity has a non released major update of the graph view and changes can have significant impact on this project... hopefully the basic logic stays the same. 
 
 ![image](https://user-images.githubusercontent.com/62897460/166552187-deaf7304-e2b7-496d-ba8a-ab03dd15ea4a.png)
 
 The motive of this project is to replace an Animator based FSM in my game. Just for reusability I decide to make the tool generic.
+
+This tool supports the famous Scriptable Object eventing system natively. Though you might need to implement some methods on your own if you are already using one.
 
 There are also tutorials that instruct you to implement one from scratch, notabaly the tutorial from The Kiwi Coder from which I took my first steps. I basically started by combining the best part of the different tutorials and change the architecture to fit my own needs... 
 
