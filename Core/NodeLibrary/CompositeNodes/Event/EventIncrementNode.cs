@@ -41,5 +41,10 @@ namespace MochiBTS.Core.NodeLibrary.CompositeNodes.Event
             children[currentChildIndex].UpdateNode(agent, blackboard);
             return State.Running;
         }
+
+        public override void UpdateInfo()
+        {
+            info = $"{soEventName}>>{currentChildIndex.ToString()}~{children[currentChildIndex].name.Replace("Node","")}";
+        }
     }
 }

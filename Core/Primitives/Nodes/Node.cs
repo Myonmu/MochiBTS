@@ -1,3 +1,4 @@
+using System;
 using MochiBTS.Core.Primitives.DataContainers;
 using UnityEngine;
 namespace MochiBTS.Core.Primitives.Nodes
@@ -14,10 +15,9 @@ namespace MochiBTS.Core.Primitives.Nodes
         [HideInInspector] public bool started;
         [HideInInspector] public string guid;
         [HideInInspector] public Vector2 position;
-        //[HideInInspector] public Blackboard blackboard;
-        //[HideInInspector] public Agent agent;
         [TextArea] public string description;
         [HideInInspector] public string info;
+        [HideInInspector] public string subInfo;
         public virtual string Tooltip { get; }
 
         public State UpdateNode(Agent agent, Blackboard blackboard)

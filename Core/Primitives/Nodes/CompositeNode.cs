@@ -12,5 +12,6 @@ namespace MochiBTS.Core.Primitives.Nodes
             node.children = children.ConvertAll(c => c.Clone());
             return node;
         }
+        
     }
 }

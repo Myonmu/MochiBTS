@@ -29,5 +29,12 @@ namespace MochiBTS.Core.NodeLibrary.DecoratorNodes.General
             detected = true;
             return outputState;
         }
+
+        public override void UpdateInfo()
+        {
+            var s = detected ? "Broken" : "Passing";
+            subInfo = $"Break on: {detectState}";
+            info = $"({s})";
+        }
     }
 }

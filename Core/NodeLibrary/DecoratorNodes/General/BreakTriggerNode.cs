@@ -26,5 +26,10 @@ namespace MochiBTS.Core.NodeLibrary.DecoratorNodes.General
             Debug.Break();
             return childState;
         }
+
+        public override void UpdateInfo()
+        {
+            info = notEqualTo ? $"!={triggerState.ToString()}" : $"={triggerState.ToString()}";
+        }
     }
 }

@@ -31,5 +31,10 @@ namespace MochiBTS.Core.NodeLibrary.CompositeNodes.General
             }
             return currentChildIndex >= children.Count ? State.Success : State.Running;
         }
+        
+        public override void UpdateInfo()
+        {
+            info = $"{currentChildIndex.ToString()}~{children[currentChildIndex].name.Replace("Node","")}";
+        }
     }
 }

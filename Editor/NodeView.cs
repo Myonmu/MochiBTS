@@ -43,8 +43,13 @@ namespace MochiBTS.Editor
             
             //Set up info label
             var infoLabel = this.Q<Label>("info");
+            //infoLabel.RegisterCallback<>;
             infoLabel.bindingPath = "info";
             infoLabel.Bind(serializedObject);
+            
+            var subInfoLabel = this.Q<Label>("subInfo");
+            subInfoLabel.bindingPath = "subInfo";
+            subInfoLabel.Bind(serializedObject);
 
 
         }

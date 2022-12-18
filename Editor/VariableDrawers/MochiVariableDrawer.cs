@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEngine;
 namespace MochiBTS.Editor.VariableDrawers
 {
-    [CustomPropertyDrawer(typeof(MochiVariable<>),true)]
+    [CustomPropertyDrawer(typeof(MochiVariable<>), true)]
     public class MochiVariableDrawer : PropertyDrawer
     {
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
@@ -34,7 +34,12 @@ namespace MochiBTS.Editor.VariableDrawers
             GUI.enabled = enumMode == "Value";
             var val = property.FindPropertyRelative("val");
             property.serializedObject.Update();
-
+            if (val.isArray || EditorGUI.GetPropertyHeight(val) > EditorGUIUtility.singleLineHeight) {
+                position.x = initX;
+                position.y += EditorGUIUtility.singleLineHeight;
+                position.width = maxWidth;
+                position.height = EditorGUI.GetPropertyHeight(val);
+            }
             EditorGUI.PropertyField(position, val, GUIContent.none);
             property.serializedObject.ApplyModifiedProperties();
             //Binding Source
@@ -46,7 +51,8 @@ namespace MochiBTS.Editor.VariableDrawers
                 return;
             }
             GUI.enabled = mode.boolValue;
-            position.y += EditorGUIUtility.singleLineHeight + 7f;
+            position.y += position.height + 7f;
+            position.height = EditorGUIUtility.singleLineHeight;
             position.x = initX;
             position.width = maxWidth;
             switch (enumMode) {
@@ -66,8 +72,16 @@ namespace MochiBTS.Editor.VariableDrawers
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            if (!property.FindPropertyRelative("bindVariable").boolValue) return EditorGUIUtility.singleLineHeight;
-            return EditorGUIUtility.singleLineHeight * (property.isExpanded ? 2.7f : 1);
+            var val = property.FindPropertyRelative("val"); 
+            var h = EditorGUIUtility.singleLineHeight * (property.isExpanded ? 2.5f : 1);
+            if (property.FindPropertyRelative("bindVariable").enumValueIndex == 0) {
+                if(EditorGUI.GetPropertyHeight(val) <= EditorGUIUtility.singleLineHeight*1.1 && !val.isArray)
+                    return EditorGUIUtility.singleLineHeight;
+                return property.isExpanded ? EditorGUIUtility.singleLineHeight * 1.2f + EditorGUI.GetPropertyHeight(val) :
+                    EditorGUIUtility.singleLineHeight * 1.2f;
+            }
+            h += EditorGUI.GetPropertyHeight(val);
+            return h;
         }
     }
 }

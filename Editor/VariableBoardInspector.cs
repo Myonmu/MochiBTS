@@ -73,7 +73,7 @@ namespace MochiBTS.Editor
 
                     string mode = null;
                     mode = useBinding.enumNames[useBinding.enumValueIndex];
-                    var valString = $"{val.boxedValue}";
+                    var valString =val.isArray?"<Array>": $"{val.boxedValue}";
                     var boundValueIsNull = false;
                     if (mode != "Value")
                     {
@@ -222,18 +222,18 @@ namespace MochiBTS.Editor
             serializedObject.ApplyModifiedProperties();
         }
 
-        private void FetchAllVariableTypes()
+        private static void FetchAllVariableTypes()
         {
             TypeCache.Clear();
             var cache = UnityEditor.TypeCache.GetTypesDerivedFrom<IMochiVariableBase>();
             foreach (var t in cache)
             {
                 if (t.IsAbstract || t.IsGenericTypeDefinition || t.IsGenericType) continue;
-                TypeCache.Add(t.Name, t);
+                TypeCache.Add(t.Name.Replace("Mochi",""), t);
             }
         }
 
-        public static IMochiVariableBase Instantiate(Type varType)
+        private static IMochiVariableBase Instantiate(Type varType)
         {
             return (IMochiVariableBase)Activator.CreateInstance(varType);
         }

@@ -10,21 +10,20 @@ namespace MochiBTS.Editor
         public override void OnGUI(Rect position, SerializedProperty property,
             GUIContent label)
         {
-            GUI.Box(position,GUIContent.none);
+            GUI.Box(position, GUIContent.none);
             var maxWidth = position.width;
             var xmin = position.xMin;
             position.height = EditorGUIUtility.singleLineHeight;
             GUI.contentColor = Color.yellow;
-            GUI.Label(position,"Data Source");
-            position.y += position.height;
+            GUI.Label(position, "Data Source");
+            position.y += position.height*1.1f;
             position.width *= 0.5f;
             EditorGUI.PropertyField(position, property.FindPropertyRelative("sourceName"), GUIContent.none);
             position.x += position.width;
             EditorGUI.PropertyField(position, property.FindPropertyRelative("sourceType"), GUIContent.none);
             var enumVal = property.FindPropertyRelative("sourceType");
             var type = enumVal.enumNames[enumVal.enumValueIndex];
-            if (type != "None")
-            {
+            if (type != "None") {
                 GUI.contentColor = Color.white;
                 return;
             }
@@ -40,8 +39,8 @@ namespace MochiBTS.Editor
         {
             var enumVal = property.FindPropertyRelative("sourceType");
             var type = enumVal.enumNames[enumVal.enumValueIndex];
-            if (type == "None") return EditorGUIUtility.singleLineHeight* 3;
-            return EditorGUIUtility.singleLineHeight*2 ;
+            if (type == "None") return EditorGUIUtility.singleLineHeight * 4.4f;
+            return EditorGUIUtility.singleLineHeight * 2;
         }
     }
 }
