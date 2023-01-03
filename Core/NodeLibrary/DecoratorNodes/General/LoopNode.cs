@@ -25,5 +25,10 @@ namespace MochiBTS.Core.NodeLibrary.DecoratorNodes.General
                 loopCounter--;
             return infiniteLoop ? State.Running : loopCounter <= 0 ? State.Success : State.Running;
         }
+
+        public override void UpdateInfo()
+        {
+            info = infiniteLoop ? "INF" : $"{loopCounter} of {iterations}";
+        }
     }
 }

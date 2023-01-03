@@ -20,6 +20,7 @@ namespace MochiBTS.Core
         private void Start()
         {
             tree = tree.Clone();
+            ResetTree();
             agent ??= GetComponent<Agent>();
             
         }

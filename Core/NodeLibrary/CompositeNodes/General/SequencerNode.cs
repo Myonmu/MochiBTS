@@ -34,6 +34,10 @@ namespace MochiBTS.Core.NodeLibrary.CompositeNodes.General
         
         public override void UpdateInfo()
         {
+            if (children.Count < 1) {
+                info = "No connected node";
+                return;
+            }
             info = $"{currentChildIndex.ToString()}~{children[currentChildIndex].name.Replace("Node","")}";
         }
     }

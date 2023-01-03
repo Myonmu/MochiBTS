@@ -51,7 +51,8 @@ namespace MochiBTS.Editor
             subInfoLabel.bindingPath = "subInfo";
             subInfoLabel.Bind(serializedObject);
 
-
+            var icon = this.Q<Image>("icon");
+            
         }
         /// <summary>
         ///     Add the node's base class label. Allows to apply uss styling.

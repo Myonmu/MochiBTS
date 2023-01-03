@@ -43,7 +43,7 @@ namespace MochiBTS.Core.Primitives
                 if (n is null) return;
                 tree.nodes.Add(n);
             });
-            tree.blackboard = blackboard.Clone();
+            if(tree.blackboard is not null) tree.blackboard = blackboard.Clone();
             return tree;
         }
 

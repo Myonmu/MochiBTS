@@ -6,20 +6,26 @@
                 <ui:VisualElement name="input" style="padding-left: 2px; padding-right: 2px; padding-top: 2px; padding-bottom: 2px;" />
                 <ui:VisualElement name="divider" class="vertical" />
                 <ui:VisualElement name="title" style="padding-left: 3px; padding-right: 3px; padding-top: 3px; padding-bottom: 3px;">
-                    <ui:Label name="title-label" text="RootNode" class="unity-text-element unity-label" style="-unity-font: url(&apos;project://database/Library/unity%20default%20resources?fileID=10102&amp;guid=0000000000000000e000000000000000&amp;type=0#Arial&apos;); -unity-font-style: bold; -unity-text-align: upper-center; color: rgb(212, 212, 212); font-size: 16px;" />
+                    <ui:Label name="title-label" text="RootNode" class="unity-text-element unity-label" style="-unity-font: url(&apos;project://database/Library/unity%20default%20resources?fileID=10102&amp;guid=0000000000000000e000000000000000&amp;type=0#LegacyRuntime&apos;); -unity-font-style: bold; -unity-text-align: upper-center; color: rgb(212, 212, 212); font-size: 16px;">
+                        <ui:VisualElement name="selection-border" picking-mode="Ignore" style="position: absolute; left: 0; top: 0; right: 1px; bottom: 0;" />
+                    </ui:Label>
                     <ui:VisualElement name="title-button-container">
                         <ui:VisualElement name="collapse-button">
                             <ui:VisualElement name="icon" style="background-image: none; -unity-background-scale-mode: scale-to-fit; min-width: 0; min-height: 0;" />
                         </ui:VisualElement>
                     </ui:VisualElement>
                 </ui:VisualElement>
-                <ui:Label tabindex="-1" text="Description goes here" display-tooltip-when-elided="true" name="description" style="padding-left: 4px; padding-right: 4px; padding-top: 4px; padding-bottom: 4px; flex-shrink: 1; flex-grow: 1; max-width: none;" />
-                <ui:Label tabindex="-1" text="Less important Info" display-tooltip-when-elided="true" name="subInfo" style="-unity-text-align: upper-center; color: rgb(224, 255, 16); -unity-text-outline-width: 0; -unity-font-style: bold; font-size: 12px; background-color: rgba(255, 0, 155, 0);" />
-                <ui:Label tabindex="-1" text="Relevant Info" display-tooltip-when-elided="true" name="info" style="-unity-text-align: upper-center; color: rgb(255, 16, 205); -unity-text-outline-width: 0; -unity-font-style: bold; font-size: 18px;" />
+                <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); flex-direction: row; align-items: stretch; align-self: center; justify-content: flex-start;">
+                    <ui:VisualElement name="icon" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); background-image: url(&apos;project://database/Assets/Gizmos/MyonBTS/Core/Primitives/Nodes/ActionNode%20Icon.png?fileID=2800000&amp;guid=d5dda1bfdeca03945940819c6d90294b&amp;type=3#ActionNode Icon&apos;); -unity-background-scale-mode: scale-to-fit; align-items: stretch; min-width: 64px; min-height: 64px; -unity-text-align: middle-center;" />
+                    <ui:VisualElement style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); justify-content: space-between; align-items: center;">
+                        <ui:Label tabindex="-1" text="Description goes here" display-tooltip-when-elided="true" name="description" style="padding-left: 4px; padding-right: 4px; padding-top: 4px; padding-bottom: 4px; flex-shrink: 1; flex-grow: 1; max-width: none;" />
+                        <ui:Label tabindex="-1" text="Less important Info" display-tooltip-when-elided="true" name="subInfo" style="-unity-text-align: upper-center; color: rgb(224, 255, 16); -unity-text-outline-width: 0; -unity-font-style: bold; font-size: 12px; background-color: rgba(255, 0, 155, 0);" />
+                        <ui:Label tabindex="-1" text="Relevant Info" display-tooltip-when-elided="true" name="info" style="-unity-text-align: upper-center; color: rgb(255, 90, 173); -unity-text-outline-width: 0; -unity-font-style: bold; font-size: 18px;" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
                 <ui:VisualElement name="divider" class="vertical" />
                 <ui:VisualElement name="output" style="padding-bottom: 5px; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0;" />
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
-    <ui:VisualElement name="selection-border" picking-mode="Ignore" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0;" />
 </ui:UXML>
