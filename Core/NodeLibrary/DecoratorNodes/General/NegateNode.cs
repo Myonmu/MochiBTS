@@ -6,7 +6,7 @@ namespace MochiBTS.Core.NodeLibrary.DecoratorNodes.General
     public class NegateNode : DecoratorNode
     {
 
-        public override string tooltip =>
+        public override string Tooltip =>
             "Return the opposite state (Success <-> Failure). Running state is returned as normal";
         protected override void OnStart(Agent agent, Blackboard blackboard)
         {

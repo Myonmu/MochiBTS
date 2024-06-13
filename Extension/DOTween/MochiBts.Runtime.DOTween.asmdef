@@ -1,0 +1,4 @@
+﻿{
+  "name": "MochiBts.Runtime.DOTween",
+  "references":[ "MochiBts.Runtime.Primitives" ]
+}

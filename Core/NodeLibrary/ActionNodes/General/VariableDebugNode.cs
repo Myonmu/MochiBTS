@@ -7,7 +7,7 @@ namespace MochiBTS.Core.NodeLibrary.ActionNodes.General
     {
         public DataSource<object> variable;
 
-        public override string tooltip =>
+        public override string Tooltip =>
             "Prints the value of a variable in the debug console. Immediately succeeds.";
         protected override void OnStart(Agent agent, Blackboard blackboard)
         {
@@ -21,6 +21,11 @@ namespace MochiBTS.Core.NodeLibrary.ActionNodes.General
         {
             Debug.Log(variable.value);
             return State.Success;
+        }
+
+        public override void UpdateInfo()
+        {
+            info = variable.value.ToString();
         }
     }
 }

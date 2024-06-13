@@ -8,7 +8,7 @@ namespace MochiBTS.Core.NodeLibrary.DecoratorNodes.General
         public State detectState = State.Success;
         public bool notEqualTo;
         private bool detected;
-        public override string tooltip =>
+        public override string Tooltip =>
             "Will keep running until child node returns a state equal to detectState " +
             "(or not equal to if notEqualTo is set to true). " +
             "The node will return outputState if the previous condition is true. After that, " +
@@ -28,6 +28,13 @@ namespace MochiBTS.Core.NodeLibrary.DecoratorNodes.General
                 notEqualTo && childState == detectState) return State.Running;
             detected = true;
             return outputState;
+        }
+
+        public override void UpdateInfo()
+        {
+            var s = detected ? "Broken" : "Passing";
+            subInfo = $"Break on: {detectState}";
+            info = $"({s})";
         }
     }
 }

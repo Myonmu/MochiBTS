@@ -7,7 +7,7 @@ namespace MochiBTS.Core.NodeLibrary.CompositeNodes.General
     {
 
         public int seed;
-        public override string tooltip =>
+        public override string Tooltip =>
             "Executes a random child, by using the provided seed if seed is not 0." +
             "Returns the state of the executed child.";
         protected override void OnStart(Agent agent, Blackboard blackboard)

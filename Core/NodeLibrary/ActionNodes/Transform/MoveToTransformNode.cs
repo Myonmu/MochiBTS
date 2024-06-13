@@ -9,7 +9,7 @@ namespace MochiBTS.Core.NodeLibrary.ActionNodes.Transform
         public float tolerance = 0.1f;
         public DataSource<UnityEngine.Transform> targetTransform;
         private float sqrTolerance;
-        public override string tooltip =>
+        public override string Tooltip =>
             "Move the agent directly to the target transform without any navigation." +
             " Returns Running if target is not reached. Returns Success if reached. " +
             "If there is no transform to move to, returns Failure. Note That the serialized" +

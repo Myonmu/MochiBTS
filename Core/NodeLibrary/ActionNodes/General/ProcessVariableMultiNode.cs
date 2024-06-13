@@ -1,16 +1,16 @@
 ﻿using System.Collections.Generic;
 using MochiBTS.Core.Primitives.DataContainers;
 using MochiBTS.Core.Primitives.DataProcessors;
-using MochiBTS.Core.Primitives.Nodes;
-namespace MochiBTS.Core.NodeLibrary.ActionNodes.General
+
+namespace MochiBTS.Core.Primitives.Nodes
 {
-    public class ProcessVariableMultiNode : ActionNode
+    public class ProcessVariableMultiNode<T> : ActionNode
     {
-        public DataSource<object> variableA;
-        public DataSource<object> variableB;
-        public DataSource<object> outputVariable;
-        public List<BaseMultiDataProcessor> processors;
-        public override string tooltip =>
+        public DataSource<T> variableA;
+        public DataSource<T> variableB;
+        public DataSource<T> outputVariable;
+        public List<MultiDataProcessor<T>> processors;
+        public override string Tooltip =>
             "Applies a list of processors to 2 variables, store the result in a 3rd variable." +
             "Immediately succeeds.";
         protected override void OnStart(Agent agent, Blackboard blackboard)

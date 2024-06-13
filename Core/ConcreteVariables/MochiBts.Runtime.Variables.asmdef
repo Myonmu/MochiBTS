@@ -1,0 +1,4 @@
+﻿{
+  "name": "MochiBts.Runtime.Variables",
+  "references":[ "MochiBts.Runtime.Primitives" ]
+}

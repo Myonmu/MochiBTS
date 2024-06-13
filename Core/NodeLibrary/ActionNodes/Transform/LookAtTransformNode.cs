@@ -9,7 +9,7 @@ namespace MochiBTS.Core.NodeLibrary.ActionNodes.Transform
         public DataSource<Vector3> baseDirection;
         public DataSource<UnityEngine.Transform> targetTransform;
         private Vector3 actualBase;
-        public override string tooltip =>
+        public override string Tooltip =>
             "Makes the agent's transform turns to look at the given transform. The orientation of the agent " +
             "is determined by baseDirection. No lerp. Immediately succeeds.";
         protected override void OnStart(Agent agent, Blackboard blackboard)

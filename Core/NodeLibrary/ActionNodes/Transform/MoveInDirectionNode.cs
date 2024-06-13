@@ -8,7 +8,7 @@ namespace MochiBTS.Core.NodeLibrary.ActionNodes.Transform
         public DataSource<Vector3> direction;
         public float speed = 1;
 
-        public override string tooltip =>
+        public override string Tooltip =>
             "Moves the object in the given direction. Immediately succeeds.";
         protected override void OnStart(Agent agent, Blackboard blackboard)
         {

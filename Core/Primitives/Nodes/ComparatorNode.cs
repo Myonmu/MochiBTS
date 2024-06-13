@@ -8,7 +8,7 @@ namespace MochiBTS.Core.Primitives.Nodes
         public bool inclusive;
         public DataSource<T> left;
         public DataSource<T> right;
-        public override string tooltip =>
+        public override string Tooltip =>
             "This node compares the left value and right value by the given compare mode." +
             "If the evaluation is true, it returns success, otherwise failure. " +
             "[This node uses reflection]";

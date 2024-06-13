@@ -10,7 +10,7 @@ namespace MochiBTS.Core.NodeLibrary.CompositeNodes.Event
         private int currentChildIndex;
         private ISubscribable soEvent;
 
-        public override string tooltip =>
+        public override string Tooltip =>
             "Executes its children from left to right, returns Running. " +
             "Will only switch to the next child upon reception" +
             " of the assigned btsEvent. Returns success if reaches the end.";
@@ -40,6 +40,12 @@ namespace MochiBTS.Core.NodeLibrary.CompositeNodes.Event
             if (currentChildIndex >= children.Count) return State.Success;
             children[currentChildIndex].UpdateNode(agent, blackboard);
             return State.Running;
+        }
+
+        public override void UpdateInfo()
+        {
+            if (children.Count < 1) return;
+            info = $"{soEventName}>>{currentChildIndex.ToString()}~{children[currentChildIndex].name.Replace("Node","")}";
         }
     }
 }

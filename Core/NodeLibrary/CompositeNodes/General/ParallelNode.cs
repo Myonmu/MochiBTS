@@ -5,8 +5,9 @@ namespace MochiBTS.Core.NodeLibrary.CompositeNodes.General
     public class ParallelNode : CompositeNode
     {
         public int successThreshold;
+        private int successfulNodes;
 
-        public override string tooltip =>
+        public override string Tooltip =>
             "A parallel node executes all children in left to right order in the same tick. " +
             "Succeeds if number of succeeding children reaches successThreshold, fails if all children fail." +
             "Keeps running if at least one child is running.";
@@ -21,7 +22,7 @@ namespace MochiBTS.Core.NodeLibrary.CompositeNodes.General
         }
         protected override State OnUpdate(Agent agent, Blackboard blackboard)
         {
-            var successfulNodes = 0;
+            successfulNodes = 0;
             var hasChildrenRunning = false;
             foreach (var node in children) {
                 switch (node.UpdateNode(agent, blackboard)) {
@@ -35,6 +36,11 @@ namespace MochiBTS.Core.NodeLibrary.CompositeNodes.General
                 if (successfulNodes >= successThreshold) return State.Success;
             }
             return hasChildrenRunning ? State.Running : State.Failure;
+        }
+
+        public override void UpdateInfo()
+        {
+            info = successfulNodes.ToString();
         }
     }
 }

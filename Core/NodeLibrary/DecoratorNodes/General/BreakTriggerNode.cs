@@ -8,7 +8,7 @@ namespace MochiBTS.Core.NodeLibrary.DecoratorNodes.General
         public State triggerState;
         public bool passThrough = true;
         public bool notEqualTo;
-        public override string tooltip =>
+        public override string Tooltip =>
             "Pauses the editor when the child returns a state equal to triggerState, or not equal to triggerState" +
             " if notEqualTo is true. PassThrough indicates whether to return child's state or Running.";
         protected override void OnStart(Agent agent, Blackboard blackboard)
@@ -25,6 +25,11 @@ namespace MochiBTS.Core.NodeLibrary.DecoratorNodes.General
                 notEqualTo && childState == triggerState) return passThrough ? childState : State.Running;
             Debug.Break();
             return childState;
+        }
+
+        public override void UpdateInfo()
+        {
+            info = notEqualTo ? $"!={triggerState.ToString()}" : $"={triggerState.ToString()}";
         }
     }
 }

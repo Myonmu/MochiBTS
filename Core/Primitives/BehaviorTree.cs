@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using MochiBTS.Core.Primitives.DataContainers;
 using MochiBTS.Core.Primitives.Nodes;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 namespace MochiBTS.Core.Primitives
 {
@@ -13,7 +15,7 @@ namespace MochiBTS.Core.Primitives
         // public BehaviorTree runtimeInstance => instance ? instance : (instance = this.Clone());
         public Node rootNode;
         public Node.State treeState = Node.State.Running;
-        [HideInInspector]public List<Node> nodes = new();
+        [HideInInspector] public List<Node> nodes = new();
         public Blackboard blackboard;
         //View Transform
         [HideInInspector] public Vector3 transformScale;
@@ -43,7 +45,7 @@ namespace MochiBTS.Core.Primitives
                 if (n is null) return;
                 tree.nodes.Add(n);
             });
-            tree.blackboard = blackboard.Clone();
+            if (tree.blackboard is not null) tree.blackboard = blackboard.Clone();
             return tree;
         }
 
@@ -102,6 +104,7 @@ namespace MochiBTS.Core.Primitives
                     root.child = child;
                     break;
             }
+            child.AssignParent(parent);
             EditorUtility.SetDirty(parent);
 
         }
@@ -121,10 +124,14 @@ namespace MochiBTS.Core.Primitives
                     root.child = null;
                     break;
             }
+            child.AssignParent(null);
             EditorUtility.SetDirty(parent);
 
         }
 
+
+
+        #endif
         public static List<Node> GetChildren(Node parent)
         {
             var children = new List<Node>();
@@ -142,6 +149,5 @@ namespace MochiBTS.Core.Primitives
             return children;
         }
 
-        #endif
     }
 }

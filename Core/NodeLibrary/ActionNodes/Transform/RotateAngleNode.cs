@@ -7,7 +7,7 @@ namespace MochiBTS.Core.NodeLibrary.ActionNodes.Transform
     {
         public bool useLocalSpace;
         public DataSource<Vector3> angle;
-        public override string tooltip =>
+        public override string Tooltip =>
             "Rotates the agent with the given Euler angles. No lerp. Immediately succeeds.";
         protected override void OnStart(Agent agent, Blackboard blackboard)
         {
