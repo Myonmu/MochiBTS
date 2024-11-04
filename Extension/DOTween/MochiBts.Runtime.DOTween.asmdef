@@ -1,4 +1,18 @@
-﻿{
-  "name": "MochiBts.Runtime.DOTween",
-  "references":[ "MochiBts.Runtime.Primitives" ]
+{
+    "name": "MochiBts.Runtime.DOTween",
+    "rootNamespace": "",
+    "references": [
+        "MochiBts.Runtime.Primitives"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "DOTWEEN"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

@@ -9,11 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 077fb02579b04c7ba321371daf7cb2b6, type: 3}
+  m_Script: {fileID: 11500000, guid: a1c0ec2a2d87d5a4fa53cac478946c95, type: 3}
   m_Name: BehaviourTreeSettings
   m_EditorClassIdentifier: 
-  behaviorTreeXml: {fileID: 9197481963319205126, guid: f022e53aaf73f7944a2fecf4f6df9dfb, type: 3}
-  behaviorTreeStyle: {fileID: 7433441132597879392, guid: e4c5bde61ded1364a8b1e70f2cebf49e, type: 3}
-  nodeXml: {fileID: 9197481963319205126, guid: f7c579ffca636fb49b5cbe5ce69fd329, type: 3}
-  nodeStyle: {fileID: 7433441132597879392, guid: 7474b33d9060f214caa8db4590ff9f10, type: 3}
+  behaviorTreeXml: {fileID: 0}
+  behaviorTreeStyle: {fileID: 0}
+  nodeXml: {fileID: 0}
+  nodeStyle: {fileID: 0}
   nodeIcons: []
